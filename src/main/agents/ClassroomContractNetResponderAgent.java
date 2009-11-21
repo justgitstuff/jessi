@@ -1,19 +1,13 @@
 package main.agents;
 
 import jade.core.Agent;
-import jade.core.AID;
-import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetResponder;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
 import jade.domain.FIPANames;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPAAgentManagement.FailureException;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import static misc.DebugFunctions.*;
 
 
@@ -30,7 +24,9 @@ public class ClassroomContractNetResponderAgent extends Agent {
 	protected void setup() {
 
 		// Register the service with the DFAgent
-		addBehaviour(new RegisterServiceBehaviour());		
+		addBehaviour(new RegisterServiceBehaviour(this, 
+												  "JADE-classroom-search", 
+												  "classroom-search"));		
 		// Create the message template for the contract net interaction protocol
 		log(this, " waiting for CFP...");
 		MessageTemplate template = MessageTemplate.and(
@@ -38,7 +34,6 @@ public class ClassroomContractNetResponderAgent extends Agent {
 				MessageTemplate.MatchPerformative(ACLMessage.CFP));
 		addBehaviour(new ClassroomContractNetResponderBehaviour(this, template));
 	}
-	
 	
 	private int evaluateAction() {
 		// Simulate an evaluation by generating a random number
@@ -50,26 +45,6 @@ public class ClassroomContractNetResponderAgent extends Agent {
 		return (Math.random() > 0.0);
 	}
 	
-
-	private class RegisterServiceBehaviour extends OneShotBehaviour {
-
-		/** Register the classroom-search service in the yellow pages */
-		@Override
-		public void action() {
-			DFAgentDescription dfd = new DFAgentDescription();
-			dfd.setName(myAgent.getAID());
-			ServiceDescription sd = new ServiceDescription();
-			sd.setType("classroom-search");
-			sd.setName("JADE-classroom-search");
-			dfd.addServices(sd);
-			try {
-				DFService.register(myAgent, dfd);
-			} catch (FIPAException fe) {
-				fe.printStackTrace();
-			}
-		}
-	}
-
 	/**
 	 * This class extends the ContractNetResponder behaviour. 
 	 * It receives messages (Call For Proposals), when one of this messages
