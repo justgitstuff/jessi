@@ -14,6 +14,8 @@ import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import static misc.DebugFunctions.*;
+
 
 /**
  * This example shows how to implement the responder role in a FIPA-contract-net
@@ -30,12 +32,13 @@ public class ClassroomContractNetResponderAgent extends Agent {
 		// Register the service with the DFAgent
 		addBehaviour(new RegisterServiceBehaviour());		
 		// Create the message template for the contract net interaction protocol
-		System.out.println("Agent " + getLocalName() + " waiting for CFP...");
+		log(this, " waiting for CFP...");
 		MessageTemplate template = MessageTemplate.and(
 				MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
 				MessageTemplate.MatchPerformative(ACLMessage.CFP));
 		addBehaviour(new ClassroomContractNetResponderBehaviour(this, template));
 	}
+	
 	
 	private int evaluateAction() {
 		// Simulate an evaluation by generating a random number
@@ -46,6 +49,7 @@ public class ClassroomContractNetResponderAgent extends Agent {
 		// Simulate action execution by generating a random number
 		return (Math.random() > 0.0);
 	}
+	
 
 	private class RegisterServiceBehaviour extends OneShotBehaviour {
 
@@ -72,29 +76,35 @@ public class ClassroomContractNetResponderAgent extends Agent {
 	 * matches the template, received in the constructor the prepareResponse 
 	 * method is executed.
 	 * 
-	 * @author rogelio
+	 * @author Rogelio Ramirez
 	 */
 	private class ClassroomContractNetResponderBehaviour extends ContractNetResponder {
 
 		public ClassroomContractNetResponderBehaviour(Agent a, MessageTemplate mt) {
 			super(a, mt);
 		}
-
+		
+		/**
+		 * When a message arrives that matches the message template passed to 
+		 * the constructor, the callback method prepareResponse is executed.
+		 * It must return the wished response, for instance the PROPOSE  
+		 * reply message. 
+		 */
 		protected ACLMessage prepareResponse(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
-			System.out.println("Agent " + getLocalName()
-					+ ": CFP received from " + cfp.getSender().getName()
-					+ ". Action is " + cfp.getContent());
+			log(myAgent, "CFP received from " + cfp.getSender().getName());
+			log(myAgent, "Action is " + cfp.getContent());
+			
 			int proposal = evaluateAction();
 			if (proposal > 2) {
 				// We provide a proposal
-				System.out.println("Agent " + getLocalName() + ": Proposing " + proposal);
+				log(myAgent, "Proposing " + proposal);
 				ACLMessage propose = cfp.createReply();
 				propose.setPerformative(ACLMessage.PROPOSE);
 				propose.setContent(String.valueOf(proposal));
 				return propose;
 			} else {
 				// We refuse to provide a proposal
-				System.out.println("Agent " + getLocalName() + ": Refuse");
+				log(myAgent, getLocalName() + ": Refuse");
 				throw new RefuseException("evaluation-failed");
 			}
 		}

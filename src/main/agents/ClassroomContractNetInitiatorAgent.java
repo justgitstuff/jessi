@@ -12,6 +12,7 @@ import jade.domain.FIPANames;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Vector;
 import java.util.Enumeration;
 import java.util.ArrayList;
@@ -30,20 +31,42 @@ import static misc.DebugFunctions.*;
 public class ClassroomContractNetInitiatorAgent extends Agent {
 
 	// Agents that give offers
-	private ArrayList<AID> classroomOfferingAgents = new ArrayList<AID>();
+	private ArrayList<AID> classroomOfferAgents = new ArrayList<AID>();
+	// List that contains the requests as soon as they arrive
+	private LinkedList<String> classroomRequests = new LinkedList<String>();
 	// Total responders of the Request For Proposal
 	private int nResponders;
-	private int remainingRequests = 1;
+	// The message that is sent to the contract network, this is changed for
+	// every new classroom request
+	ACLMessage msg;
+	// Time between searches for agents that offer the classroom-search service
+	private final long TIME_BETWEEN_SEARCHES = 10000L;
+	// CFP flag, indicates if a request to the CN is already being made
+	private boolean cfp_in_process = false;
+	
 
 	protected void setup() {
 		
+		//TODO: Delete this
+		classroomRequests.add("(1,2,3)");
+		classroomRequests.add("(4,5,6)");
+		classroomRequests.add("(7,8,9)");
+		classroomRequests.add("(10,11,12)");
+		
 		log(this, "looking for agents");
-		addBehaviour(new SearchForAgentsBehaviour(this, 15000L));
+		// Add the behavior that continually searches for agents that offer
+		// the classroom-search service
+		addBehaviour(new SearchAgentsBehaviour(this, TIME_BETWEEN_SEARCHES));
+		// Add the behavior that creates the message that will be used
+		// by the ContractNetInitiator 
 		addBehaviour(new CallForProposalsBehaviour());
 	}
 	
 	/**
-	 * @author rogelio
+	 * This behavior only processes the classroom queue. Constructs the 
+	 * Call for proposal message that the ClassroomContractNetworkInitiatorBehaviour 
+	 * will use to ask the ContractNetwrok for classrooms.
+	 * @author Rogelio Ramirez
 	 */
 	private class CallForProposalsBehaviour extends CyclicBehaviour {
 
@@ -52,31 +75,30 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 		@Override
 		public void action() {
 			// Do nothing if there are no agents to serve the request proposal
-			if(classroomOfferingAgents == null || 
-			   classroomOfferingAgents.size() == 0 ||
-			   remainingRequests <= 0) {
+			if(classroomOfferAgents == null || classroomOfferAgents.size() == 0 || 
+			   classroomRequests.size() == 0|| cfp_in_process ) {
 				return;
 			}
 			
+			log(myAgent, "CallForProposalBehaviour executing");
 			// We already have some classroom-offering agents, make them work !
-			log(myAgent, "Trying to ask for a classroom to " + classroomOfferingAgents.size() + " responders");
+			log(myAgent, "Trying to ask for a classroom to " + classroomOfferAgents.size() + " responders");
 			// Fill the CFP message (this is going to be sent to all the agents
 			// that provide the service
-			ACLMessage msg = new ACLMessage(ACLMessage.CFP);
-			// Add all the agents that will receive de proposal request
-			for (AID agent: classroomOfferingAgents) {
+			msg = new ACLMessage(ACLMessage.CFP);
+			// Add all the agents that will receive the proposal request
+			for (AID agent: classroomOfferAgents) {
 				msg.addReceiver(agent);
 			}
 			// Set the interaction protocol
 			msg.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
-			// We want to receive a reply in at most 3 secs
+			// We want to receive a reply in at most 3 seconds
 			msg.setReplyByDate(new Date(System.currentTimeMillis() + MAX_WAITING_TIME));
-			msg.setContent("dummy-classroom-search");	
-			// Add the contract net
-			addBehaviour(new ClassroomContractNetInitiatorBehaviour(myAgent, msg));
-			
-			//TODO: Delete this
-			remainingRequests--;
+			msg.setContent("classroom-search("+classroomRequests.getFirst()+")");	
+			// Mark that a call for proposal is in process
+			cfp_in_process = true;
+			// Add the ContractNetInitiatorAgentBehaviour 
+			myAgent.addBehaviour(new ClassroomContractNetInitiatorBehaviour(myAgent, msg));
 		}
 	}
 
@@ -87,9 +109,9 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 	 * 
 	 * @author Rogelio Ramirez
 	 */
-	private class SearchForAgentsBehaviour extends TickerBehaviour {
+	private class SearchAgentsBehaviour extends TickerBehaviour {
 	
-		public SearchForAgentsBehaviour(Agent a, long period) {
+		public SearchAgentsBehaviour(Agent a, long period) {
 			super(a, period);
 			log(a, "Agent searching behaviour initialized.");
 		}
@@ -117,8 +139,8 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 				for (DFAgentDescription dad : result) {
 					StringBuilder sb = new StringBuilder();
 					sb.append("Found the following classroom-offering agents:\n");
-					if (!classroomOfferingAgents.contains(dad)) {
-						classroomOfferingAgents.add(dad.getName());
+					if (!classroomOfferAgents.contains(dad)) {
+						classroomOfferAgents.add(dad.getName());
 						sb.append("\t" + dad.getName() + "\n");
 					}
 					log(myAgent, sb.toString());
@@ -129,6 +151,15 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 		}
 	}
 	
+	/**
+	 * This Behaviour extends the ContractNetInitiatior Behaviour. Once the 
+	 * requests for proposals have been sent, it handles the messages received
+	 * when a propose, refuse and failure are sent.
+	 * 
+	 * When all the responses have been received or the specified milis have 
+	 * passed the handleAllResponses method is executed.
+	 * @author Rogelio Ramirez
+	 */
 	private class ClassroomContractNetInitiatorBehaviour extends ContractNetInitiator {
 
 		public ClassroomContractNetInitiatorBehaviour(Agent a, ACLMessage cfp) {
@@ -153,8 +184,7 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 			} else {
 				log(myAgent, failure.getSender().getName() + " failed");
 			}
-			// Immediate failure --> we will not receive a response from
-			// this agent
+			// Immediate failure --> we will not receive a response from this agent
 			nResponders--;
 		}
 		
@@ -199,9 +229,16 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 							accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
 			}
 		}
+		
+		/**
+		 * This method is invoked when a node acknowledges that a proposal
+		 * has been accepted.
+		 */
 		protected void handleInform(ACLMessage inform) {
 			log(myAgent, inform.getSender().getName() 
 						 + " successfully performed the requested action");
+			classroomRequests.pop();
+			cfp_in_process = false;
 		}
 	}
 }
