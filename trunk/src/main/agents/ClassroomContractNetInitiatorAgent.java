@@ -41,14 +41,9 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 	// CFP flag, indicates if a request to the CN is already being made
 	private boolean cfp_in_process = false;
 	// Reply, to queue processing agent
-	private ACLMessage queueProcessorReply = new ACLMessage(); //TODO: Change this to null
+	private ACLMessage queueProcessorReply = null;
 
 	protected void setup() {
-		
-		// TODO: Delete this, only for testing
-		classroomRequests.add("(1,2,3)");
-		classroomRequests.add("(4,5,6)");
-		
 		
 		log(this, "looking for agents");
 		// Add the behavior that receives classroom searches requests 
