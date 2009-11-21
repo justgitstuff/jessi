@@ -3,14 +3,10 @@ package main.agents;
 import jade.core.Agent;
 import jade.core.AID;
 import jade.core.behaviours.CyclicBehaviour;
-import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetInitiator;
-import jade.domain.DFService;
-import jade.domain.FIPAException;
 import jade.domain.FIPANames;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Vector;
@@ -32,7 +28,8 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 
 	// Agents that give offers
 	private ArrayList<AID> classroomOfferAgents = new ArrayList<AID>();
-	// List that contains the requests as soon as they arrive
+	// List that contains the requests as soon as they arrive, and the ACLMessage
+	// for this request awaiting to be replied 
 	private LinkedList<String> classroomRequests = new LinkedList<String>();
 	// Total responders of the Request For Proposal
 	private int nResponders;
@@ -43,20 +40,24 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 	private final long TIME_BETWEEN_SEARCHES = 10000L;
 	// CFP flag, indicates if a request to the CN is already being made
 	private boolean cfp_in_process = false;
-	
+	// Reply, to queue processing agent
+	private ACLMessage queueProcessorReply = new ACLMessage(); //TODO: Change this to null
 
 	protected void setup() {
 		
-		//TODO: Delete this
+		// TODO: Delete this, only for testing
 		classroomRequests.add("(1,2,3)");
 		classroomRequests.add("(4,5,6)");
-		classroomRequests.add("(7,8,9)");
-		classroomRequests.add("(10,11,12)");
+		
 		
 		log(this, "looking for agents");
+		// Add the behavior that receives classroom searches requests 
+		addBehaviour(new ReceiveRequestsServer()); 
 		// Add the behavior that continually searches for agents that offer
 		// the classroom-search service
-		addBehaviour(new SearchAgentsBehaviour(this, TIME_BETWEEN_SEARCHES));
+		addBehaviour(new SearchServiceBehaviour(this, TIME_BETWEEN_SEARCHES, 
+												classroomOfferAgents, 
+												"classroom-search"));
 		// Add the behavior that creates the message that will be used
 		// by the ContractNetInitiator 
 		addBehaviour(new CallForProposalsBehaviour());
@@ -70,7 +71,7 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 	 */
 	private class CallForProposalsBehaviour extends CyclicBehaviour {
 
-		private static final long MAX_WAITING_TIME = 3000;
+		private static final long MAX_WAITING_TIME = 2000;
 		
 		@Override
 		public void action() {
@@ -102,54 +103,6 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 		}
 	}
 
-	/**
-	 * This beheviour searches for agents which offer a service of the type
-	 * "classroom-search". The name of the agents found that offer this service
-	 * are saved in the classroomOfferingAgents list.
-	 * 
-	 * @author Rogelio Ramirez
-	 */
-	private class SearchAgentsBehaviour extends TickerBehaviour {
-	
-		public SearchAgentsBehaviour(Agent a, long period) {
-			super(a, period);
-			log(a, "Agent searching behaviour initialized.");
-		}
-		/**
-		 * Search every tick for new agents offering the classroom search service.
-		 */
-		@Override
-		protected void onTick() {
-			log(myAgent,  "searching for new agents");
-			// Template to ask the DF to search for the agent
-			DFAgentDescription template = new DFAgentDescription();
-			// The service description we are looking for
-			ServiceDescription sd = new ServiceDescription();
-			// Set the type of the service description
-			sd.setType("classroom-search");
-			// At the service type to the template we are searching for
-			template.addServices(sd);
-
-			// Ask for all the agents that have the classroom-search service
-			// and add them to the list.
-			try {
-				// Search for the agents that offer the service
-				DFAgentDescription[] result = DFService.search(myAgent,template);
-				// Add only the new agents that were found
-				for (DFAgentDescription dad : result) {
-					StringBuilder sb = new StringBuilder();
-					sb.append("Found the following classroom-offering agents:\n");
-					if (!classroomOfferAgents.contains(dad)) {
-						classroomOfferAgents.add(dad.getName());
-						sb.append("\t" + dad.getName() + "\n");
-					}
-					log(myAgent, sb.toString());
-				}
-			} catch (FIPAException fe) {
-				fe.printStackTrace();
-			}
-		}
-	}
 	
 	/**
 	 * This Behaviour extends the ContractNetInitiatior Behaviour. Once the 
@@ -224,10 +177,20 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 			}
 			// Accept the proposal of the best proposer
 			if (accept != null) {
-				log(myAgent, "Accepting proposal " + bestProposal
-						+ " from responder " + bestProposer.getName());
-							accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+				log(myAgent, "Accepting proposal " + bestProposal + " from responder " + bestProposer.getName());
+				accept.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+				// Tell the queue processor agent that a classroom was found
+				// send a message with the corresponding assignment
+				queueProcessorReply.setPerformative(ACLMessage.INFORM);
+				// TODO: Send the data of the classroom found
 			}
+			// There wasn't any proposal. So the search for a classroom has failed
+			// tell queue processor agent so.
+			else {
+				queueProcessorReply.setPerformative(ACLMessage.REFUSE);
+				queueProcessorReply.setContent("not-available");
+			}
+			myAgent.send(queueProcessorReply);
 		}
 		
 		/**
@@ -239,6 +202,29 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 						 + " successfully performed the requested action");
 			classroomRequests.pop();
 			cfp_in_process = false;
+		}	
+	}
+	
+	/**
+	 * This behaviour waits for a message with the REQUEST performative and 
+	 * processes the message, adding a new request to the queue.
+	 * @author Rogelio Ramirez
+	 */
+	private class ReceiveRequestsServer extends CyclicBehaviour {
+
+		@Override
+		public void action() {
+			log(myAgent, "Executing ReceiveRequestsServer behavior ");
+			MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
+			ACLMessage msg = myAgent.receive(mt);
+			if(msg != null) {
+				String content = msg.getContent();
+				log(myAgent, "Received content" + content);
+				queueProcessorReply = msg.createReply();
+			}
+			else {
+				block();
+			}
 		}
 	}
 }
