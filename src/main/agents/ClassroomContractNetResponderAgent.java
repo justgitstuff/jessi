@@ -72,7 +72,7 @@ public class ClassroomContractNetResponderAgent extends Agent {
 			log(myAgent, "Action is " + cfp.getContent());
 			
 			int proposal = evaluateAction();
-			if (proposal > 2) {
+			if (proposal > 0) {
 				// We provide a proposal
 				log(myAgent, "Proposing " + proposal);
 				ACLMessage propose = cfp.createReply();

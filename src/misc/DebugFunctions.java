@@ -1,7 +1,6 @@
 package misc;
 
 import java.io.PrintWriter;
-
 import jade.core.Agent;
 
 public final class DebugFunctions {

@@ -51,7 +51,7 @@ public class ClassroomRequestAgent extends Agent {
 		classroomRequests.add("(6,2)");
 		classroomRequests.add("(7,3)");
 		classroomRequests.add("(8,3)");
-		classroomRequests.add("(9,3");
+		classroomRequests.add("(9,3)");
 		classroomRequests.add("(10,1)");
 		classroomRequests.add("(11,2)");
 		classroomRequests.add("(12,3)");
@@ -102,6 +102,7 @@ public class ClassroomRequestAgent extends Agent {
 					msg.setReplyWith("classroom-request" + System.currentTimeMillis());
 					// Send the message
 					myAgent.send(msg);
+					log(myAgent, "Looking for classroom with " + msg.getContent());
 					// Prepare a message hearing template for the response 
 					mt = MessageTemplate.and(
 							MessageTemplate.MatchConversationId(CONVERSATION_ID), 
