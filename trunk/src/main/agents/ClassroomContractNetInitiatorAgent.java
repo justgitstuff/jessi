@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.Vector;
 import java.util.Enumeration;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static misc.DebugFunctions.*;
 
@@ -30,7 +32,7 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 	// Agents that give offers
 	private ArrayList<AID> classroomOfferAgents = new ArrayList<AID>();
 	// List that contains the requests as soon as they arrive, and the ACLMessage
-	// for this request awaiting to be replied 
+	// For this request awaiting to be replied 
 	private LinkedList<String> classroomRequests = new LinkedList<String>();
 	// Total responders of the Request For Proposal
 	private int nResponders;
@@ -183,7 +185,7 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 				// Tell the queue processor agent that a classroom was found
 				// send a message with the corresponding assignment
 				queueProcessorReply.setPerformative(ACLMessage.INFORM);
-				// TODO: Send the data of the classroom found
+				queueProcessorReply.setContent("ok");
 			}
 			// There wasn't any proposal. So the search for a classroom has failed
 			// tell queue processor agent so.
@@ -220,8 +222,18 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 			ACLMessage msg = myAgent.receive(mt);
 			if(msg != null) {
 				String content = msg.getContent();
-				log(myAgent, "Received content" + content);
-				queueProcessorReply = msg.createReply();
+				Pattern p = Pattern.compile("\\((\\d+),(\\d+)\\)");
+				Matcher m = p.matcher(content);
+				if(m.find()) {
+					queueProcessorReply = msg.createReply();
+					classroomRequests.add(content);
+				}
+				else {
+					String error = "Received bad message from " + msg.getSender() 
+							   	   + " with content: " + content;
+					logError(myAgent, error);
+					assert false : error;
+				}
 			}
 			else {
 				block();
