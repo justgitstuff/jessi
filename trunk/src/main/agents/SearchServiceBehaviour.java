@@ -51,16 +51,22 @@ public class SearchServiceBehaviour extends TickerBehaviour {
 		try {
 			// Search for the agents that offer the service
 			DFAgentDescription[] result = DFService.search(myAgent,template);
+			// StringBuilder for output purposes 
+			StringBuilder sb = new StringBuilder();
+			int newAgents = 0;
 			// Add only the new agents that were found
 			for (DFAgentDescription dad : result) {
-				StringBuilder sb = new StringBuilder();
-				sb.append("Found the following " + serviceType +  "agents:\n");
-				if (!offerAgents.contains(dad)) {
+				if (!offerAgents.contains(dad.getName())) {
+					newAgents++;
 					offerAgents.add(dad.getName());
 					sb.append("\t" + dad.getName() + "\n");
 				}
-				log(myAgent, sb.toString());
 			}
+			
+			sb.insert(0, (newAgents > 0) ? 
+				"Found the following " + serviceType +  " agents:\n":
+				"No new agents found.");
+			log(myAgent, sb.toString());
 		} catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
