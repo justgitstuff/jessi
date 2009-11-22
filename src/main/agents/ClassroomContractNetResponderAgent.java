@@ -21,12 +21,14 @@ import static misc.DebugFunctions.*;
  */
 public class ClassroomContractNetResponderAgent extends Agent {
 	
+	
+	public static final String SERVICE_NAME = "JADE-classroom-search";
+	public static final String SERVICE_TYPE = "classroom-search";
+	
 	protected void setup() {
 
 		// Register the service with the DFAgent
-		addBehaviour(new RegisterServiceBehaviour(this, 
-												  "JADE-classroom-search", 
-												  "classroom-search"));		
+		addBehaviour(new RegisterServiceBehaviour(this, SERVICE_NAME, SERVICE_TYPE));		
 		// Create the message template for the contract net interaction protocol
 		log(this, " waiting for CFP...");
 		MessageTemplate template = MessageTemplate.and(

@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.Vector;
 import java.util.Enumeration;
 import java.util.ArrayList;
+
 import static misc.DebugFunctions.*;
 
 /**
@@ -42,17 +43,22 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 	private boolean cfp_in_process = false;
 	// Reply, to queue processing agent
 	private ACLMessage queueProcessorReply = null;
+	// Service registered info
+	public static final String SERVICE_NAME = "JADE-CN-classroom-request";
+	public static final String SERVICE_TYPE = "CN-classroom-request-receiver"; 
 
 	protected void setup() {
 		
 		log(this, "looking for agents");
 		// Add the behavior that receives classroom searches requests 
-		addBehaviour(new ReceiveRequestsServer()); 
+		addBehaviour(new ReceiveRequestsServer());
+		// Register this agent in the DF 
+		addBehaviour(new RegisterServiceBehaviour(this, SERVICE_NAME, SERVICE_TYPE));
 		// Add the behavior that continually searches for agents that offer
 		// the classroom-search service
 		addBehaviour(new SearchServiceBehaviour(this, TIME_BETWEEN_SEARCHES, 
-												classroomOfferAgents, 
-												"classroom-search"));
+					 classroomOfferAgents, 
+					 ClassroomContractNetResponderAgent.SERVICE_TYPE));
 		// Add the behavior that creates the message that will be used
 		// by the ContractNetInitiator 
 		addBehaviour(new CallForProposalsBehaviour());

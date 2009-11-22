@@ -36,7 +36,7 @@ public class RegisterServiceBehaviour extends OneShotBehaviour {
 		dfd.addServices(sd);
 		try {
 			DFService.register(myAgent, dfd);
-			log(myAgent, "Service" + type + ":" + name + " reigstered.");
+			log(myAgent, "Service " + type + ":" + name + " registered.");
 		} catch (FIPAException fe) {
 			fe.printStackTrace();
 		}
