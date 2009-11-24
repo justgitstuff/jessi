@@ -17,6 +17,7 @@ import static misc.DebugFunctions.*;
 // This class should send to the contract net only the
 // group id and the professor id, it should then wait for an answer to send the next
 // request 
+
 public class ClassroomRequestAgent extends Agent {
 	
 	// Time between searches for the contract net agents.
