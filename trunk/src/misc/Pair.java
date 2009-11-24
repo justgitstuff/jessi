@@ -27,5 +27,10 @@ public class Pair<L,R> {
 	    return this.first.equals(pairo.getLeft()) &&
 	           this.second.equals(pairo.getRight());
 	  }
+	  
+	  public String toString()
+	  {
+		  return "("+first+","+second+")";
+	  }
 
 	}

@@ -2,6 +2,7 @@ package main.agents;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,7 +11,7 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-
+import misc.Pair;
 import static misc.DebugFunctions.*;
 
 // TODO: Delete this comment.
@@ -27,7 +28,9 @@ public class ClassroomRequestAgent extends Agent {
 	private ArrayList<AID> CNAgents = new ArrayList<AID>();
 	// List of the classroom requests needed. Contains several requests
 	// of the form (groupd_id, professor_id)
-	private LinkedList<String> classroomRequests = new LinkedList<String>();
+	private Queue<Pair<String,String>> classroomRequests = new LinkedList<Pair<String,String>>();
+	
+	private Queue<String> professors = new LinkedList<String>();
 	// Regex to parse the responses of the type (group_id, professor_id)
 	private final String REGEX = "\\((\\d+),(\\d+)\\)";
 	
@@ -44,7 +47,7 @@ public class ClassroomRequestAgent extends Agent {
 		// TODO: Delete this code, and comment
 		// Lets assume we have already red the database and we have obtained 10
 		// different groups, so we send each group one by one to request the classroom
-		classroomRequests.add("(1,1)");
+		/*classroomRequests.add("(1,1)");
 		classroomRequests.add("(2,1)");
 		classroomRequests.add("(3,1)");
 		classroomRequests.add("(4,2)");
@@ -57,6 +60,7 @@ public class ClassroomRequestAgent extends Agent {
 		classroomRequests.add("(11,2)");
 		classroomRequests.add("(12,3)");
 		classroomRequests.add("(13,4)");
+		*/
 		
 		// This behavior should just be added after we got a Collection
 		// with all the group requests ready 
@@ -96,7 +100,7 @@ public class ClassroomRequestAgent extends Agent {
 					msg.addReceiver(CNAgents.get(0));
 					// Set the content for the message, a tuple with the 
 					// group id and the professor id
-					msg.setContent(classroomRequests.peek());
+					msg.setContent(classroomRequests.peek().toString());
 					// Set a conversation id
 					msg.setConversationId(CONVERSATION_ID);
 					// Create a reply-with (this needs to be unique)
@@ -128,13 +132,13 @@ public class ClassroomRequestAgent extends Agent {
 							// classroom was assigned successfully.
 							if(content.equals("ok")) {
 								log(myAgent, "Classroom successfully assigned");
-								classroomRequests.pop();
+								classroomRequests.poll();
 							}
 							// The content is a (group_id, professor_id)
 							// so add it back to the queue. 
 							else if(m.find()) {
-								classroomRequests.pop();
-								classroomRequests.add(content);
+								classroomRequests.poll();
+								classroomRequests.offer(new Pair<String,String>(content.substring(content.indexOf('(')+1, content.indexOf(',')-1),content.substring(content.indexOf(',')+1, content.indexOf(')')-1)));
 								log(myAgent, "Classroom assigned, but returned " + 
 									"collision. " + content);
 							}
