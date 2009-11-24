@@ -14,6 +14,12 @@ import jade.lang.acl.MessageTemplate;
 import misc.Pair;
 import static misc.DebugFunctions.*;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import main.agents.ConnectionFactory;
+
 // TODO: Delete this comment.
 // This class should send to the contract net only the
 // group id and the professor id, it should then wait for an answer to send the next
@@ -23,14 +29,22 @@ public class ClassroomRequestAgent extends Agent {
 	
 	// Time between searches for the contract net agents.
 	private static final long SEARCH_DELTA = 15000L;
+	private static final String OK="ok";
+	// Creates a new Connection Factory....for connections
+	ConnectionFactory factory=new ConnectionFactory();
 	// The list of the agents that provide the contract network service
 	// NOTE: This is just one agent, but may be extended in the future
 	private ArrayList<AID> CNAgents = new ArrayList<AID>();
-	// List of the classroom requests needed. Contains several requests
-	// of the form (groupd_id, professor_id)
-	private Queue<Pair<String,String>> classroomRequests = new LinkedList<Pair<String,String>>();
-	
+	// List of the group IDs we are going to process
+	private Queue<String> groups = new LinkedList<String>();
+	// List of the possible professors for each processing group, in priority order
 	private Queue<String> professors = new LinkedList<String>();
+	// The last processed group
+	private String lastGroupSent ="";
+	// Variable to hold the refused pair, to assign the next professor
+	private Pair<String,String> refusePair= null;
+	// List of Failed Groups, the groups without solution
+	private Queue<String> failedGroups= new LinkedList<String>();
 	// Regex to parse the responses of the type (group_id, professor_id)
 	private final String REGEX = "\\((\\d+),(\\d+)\\)";
 	
@@ -47,21 +61,7 @@ public class ClassroomRequestAgent extends Agent {
 		// TODO: Delete this code, and comment
 		// Lets assume we have already red the database and we have obtained 10
 		// different groups, so we send each group one by one to request the classroom
-		/*classroomRequests.add("(1,1)");
-		classroomRequests.add("(2,1)");
-		classroomRequests.add("(3,1)");
-		classroomRequests.add("(4,2)");
-		classroomRequests.add("(5,2)");
-		classroomRequests.add("(6,2)");
-		classroomRequests.add("(7,3)");
-		classroomRequests.add("(8,3)");
-		classroomRequests.add("(9,3)");
-		classroomRequests.add("(10,1)");
-		classroomRequests.add("(11,2)");
-		classroomRequests.add("(12,3)");
-		classroomRequests.add("(13,4)");
-		*/
-		
+		fillGroups();
 		// This behavior should just be added after we got a Collection
 		// with all the group requests ready 
 		addBehaviour(new ClassroomRequestBehaviour());
@@ -100,7 +100,14 @@ public class ClassroomRequestAgent extends Agent {
 					msg.addReceiver(CNAgents.get(0));
 					// Set the content for the message, a tuple with the 
 					// group id and the professor id
-					msg.setContent(classroomRequests.peek().toString());
+					if(refusePair==null)
+					{
+						msg.setContent(assignNewProfessor(groups.poll()).toString());
+					}else
+					{
+						msg.setContent(refusePair.toString());
+						refusePair=null;
+					}
 					// Set a conversation id
 					msg.setConversationId(CONVERSATION_ID);
 					// Create a reply-with (this needs to be unique)
@@ -130,15 +137,13 @@ public class ClassroomRequestAgent extends Agent {
 							Matcher m = p.matcher(content);
 							// If the content of the message is "ok" then the 
 							// classroom was assigned successfully.
-							if(content.equals("ok")) {
+							if(content.equals(OK)) {
 								log(myAgent, "Classroom successfully assigned");
-								classroomRequests.poll();
 							}
 							// The content is a (group_id, professor_id)
 							// so add it back to the queue. 
-							else if(m.find()) {
-								classroomRequests.poll();
-								classroomRequests.offer(new Pair<String,String>(content.substring(content.indexOf('(')+1, content.indexOf(',')-1),content.substring(content.indexOf(',')+1, content.indexOf(')')-1)));
+							else if(m.find()) {	
+								groups.offer(content.substring(content.indexOf('(')+1, content.indexOf(',')-1));
 								log(myAgent, "Classroom assigned, but returned " + 
 									"collision. " + content);
 							}
@@ -151,6 +156,13 @@ public class ClassroomRequestAgent extends Agent {
 						// Refusal 
 						else if(perf == ACLMessage.REFUSE){
 							log(myAgent, "Classroom assignment refused.");
+							if(!professors.isEmpty())
+							{
+								refusePair=new Pair<String,String>(lastGroupSent,professors.poll());
+							}else
+							{
+								failedGroups.offer(lastGroupSent);
+							}
 							// TODO: Here you should switch for a different professor
 							// to see if the course can have an assignment 
 							// TODO: Don't forget to remember which professors you've
@@ -163,7 +175,7 @@ public class ClassroomRequestAgent extends Agent {
 							assert false : error;
 						}
 						
-						state = (classroomRequests.size() > 0) ? 
+						state = (!groups.isEmpty()) ? 
 								CREATE_REQUEST : FINISHED;
 					}
 					// If there wasn't any reply, block the behavior until
@@ -177,7 +189,62 @@ public class ClassroomRequestAgent extends Agent {
 
 		@Override
 		public boolean done() {
-			return classroomRequests.size() == 0 || state == FINISHED;
+			return groups.isEmpty() || state == FINISHED;
 		}		
+	}
+	private void fillGroups()
+	{
+		// SQL to obtain groups
+		String sql="SELECT Grupo_Id FROM grupo;";
+		// Generate connection to the database
+		Connection conexion = factory.getConnection();
+		ResultSet result;
+		try {
+			// Obtains ResultSet tables from the execution of the query
+			result = conexion.prepareStatement(sql).executeQuery();
+			// Obtains the MetaData of the previous ResultSet
+			ResultSetMetaData resultMeta = result.getMetaData();
+			// Iterates over the table of results
+			while(result.next())
+			{
+				for(int i=0;i<resultMeta.getColumnCount();i++)
+				{
+						// Stores the resultant groups in a queue
+						groups.offer(result.getString(i));
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL Error when filling groups");
+			e.printStackTrace();
+		}
+	}
+	private Pair<String,String> assignNewProfessor(String group)
+	{
+		professors.clear();
+		// SQL to obtain groups
+		String sql="SELECT Profesor_Id FROM profesor_materia WHERE Materia_Id=(SELECT Materia_Id FROM grupo WHERE Grupo_Id ="+group+ ") ORDERED BY Prioridad;";
+		// Generate connection to the database
+		Connection conexion = factory.getConnection();
+		ResultSet result;
+		try {
+			// Obtains ResultSet tables from the execution of the query
+			result = conexion.prepareStatement(sql).executeQuery();
+			// Obtains the MetaData of the previous ResultSet
+			ResultSetMetaData resultMeta = result.getMetaData();
+			// Iterates over the table of results
+			while(result.next())
+			{
+				for(int i=0;i<resultMeta.getColumnCount();i++)
+				{
+						// Stores the resultant professors in a queue
+						professors.offer(result.getString(i));
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("SQL Error when filling groups");
+			e.printStackTrace();
+		}
+		
+		return new Pair<String,String>(group,professors.poll());
 	}
 }
