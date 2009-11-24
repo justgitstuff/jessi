@@ -10,11 +10,10 @@ import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPAAgentManagement.FailureException;
 import static misc.DebugFunctions.*;
 
-
 /**
  * This example shows how to implement the responder role in a FIPA-contract-net
  * interaction protocol. In this case in particular we use a
- * <code>ContractNetResponder</code> to participate into a negotiation where an
+ * ContractNetResponder to participate into a negotiation where an
  * initiator needs to assign a task to an agent among a set of candidates.
  * 
  * @author Rogelio Ramirez
@@ -111,6 +110,5 @@ public class ClassroomContractNetResponderAgent extends Agent {
 			// Output that the proposal was rejected and do nothing about it
 			System.out.println("Agent " + getLocalName() + ": Proposal rejected");
 		}
-
 	}
 }

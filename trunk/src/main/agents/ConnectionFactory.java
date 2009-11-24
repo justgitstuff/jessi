@@ -1,4 +1,4 @@
-package agents;
+package main.agents;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

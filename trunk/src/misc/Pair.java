@@ -1,4 +1,4 @@
-package utility;
+package misc;
 public class Pair<L,R> {
 
 	  private L first;

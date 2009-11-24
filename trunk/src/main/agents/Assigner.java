@@ -1,4 +1,4 @@
-package agents;
+package main.agents;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -8,7 +8,7 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import utility.Pair;
+import misc.Pair;
 
 public class Assigner extends Agent{
 	private static final long serialVersionUID = 1L;
