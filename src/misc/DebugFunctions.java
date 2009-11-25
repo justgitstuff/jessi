@@ -16,7 +16,10 @@ public final class DebugFunctions {
 	/** Basic log function, used by all the other log functions */
 	private static void log(String who, String message, PrintWriter p) {
 		if(DEBUG) {
-			p.println("Agent " + who + ": " +  message);
+			if(!who.equals("")) { 
+				p.print("Agent: " + who + ": ");
+			}
+			p.println(message);
 			p.flush();
 		}
 	}

@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="C:/Documents and Settings/rogelio/Mis documentos/Java/jade/lib/http.jar"/>
 	<classpathentry kind="lib" path="C:/Documents and Settings/rogelio/Mis documentos/Java/jade/lib/iiop.jar"/>
 	<classpathentry kind="lib" path="C:/Documents and Settings/rogelio/Mis documentos/Java/jade/lib/jade.jar" sourcepath="C:/Documents and Settings/rogelio/Mis documentos/Downloads/JADE-all-3.7/JADE-bin-3.7/jade/lib/jade.jar"/>
+	<classpathentry kind="lib" path="C:/Archivos de programa/Java/jdk1.6.0_16/jre/lib/ext/mysql-connector-java-5.1.10-bin.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -1,6 +1,9 @@
 package main.agents;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
@@ -28,9 +31,23 @@ public class ClassroomContractNetResponderAgent extends Agent {
 	private Connection connection = null;
 	
 	public ClassroomContractNetResponderAgent() {
-		super(); // Call the agent constructor
+		super(); // Call the agent constructor		
 		connectionFactory = new ConnectionFactory();
 		connection = connectionFactory.getConnection();
+		
+		ResultSet result = executeSQLStatement("select * from profesor");
+		
+		try {
+			while(result.next()) {
+				int id = result.getInt("Profesor_Id");
+				String nombre = result.getString("Profesor_Nombre");
+				String tipo = result.getString("Profesor_Tipo");
+				
+				System.out.println(id + " " + nombre + " " + tipo);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		assert false;
 	}
@@ -119,6 +136,18 @@ public class ClassroomContractNetResponderAgent extends Agent {
 		protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
 			// Output that the proposal was rejected and do nothing about it
 			System.out.println("Agent " + getLocalName() + ": Proposal rejected");
+		}
+	}
+	
+	private ResultSet executeSQLStatement(String query) {
+		try {
+			PreparedStatement s = connection.prepareStatement(query);
+			return s.executeQuery();
+			
+		} catch (SQLException e) {
+			logError(this, "SQL Statement failed: " + query);
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
