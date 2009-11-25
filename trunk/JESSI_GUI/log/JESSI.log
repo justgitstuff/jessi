@@ -1,0 +1,4 @@
+[21:14:25:295]-DEBUG-[            JessiGUI.java:  31] - Iniciando componentes.
+[21:14:25:509]-DEBUG-[            JessiGUI.java:  33] - Los componentes se iniciaron correcta.
+[21:14:29:199]-DEBUG-[            JessiGUI.java: 205] - Consultando horario.
+[21:14:38:035]-DEBUG-[            JessiGUI.java: 250] - Abriendo carpeta de horarios en .xls
