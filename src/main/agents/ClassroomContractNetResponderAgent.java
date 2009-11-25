@@ -1,5 +1,7 @@
 package main.agents;
 
+import java.sql.Connection;
+
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
@@ -20,12 +22,20 @@ import static misc.DebugFunctions.*;
  */
 public class ClassroomContractNetResponderAgent extends Agent {
 	
-	
 	public static final String SERVICE_NAME = "JADE-classroom-search";
 	public static final String SERVICE_TYPE = "classroom-search";
+	private ConnectionFactory connectionFactory = null;
+	private Connection connection = null;
+	
+	public ClassroomContractNetResponderAgent() {
+		super(); // Call the agent constructor
+		connectionFactory = new ConnectionFactory();
+		connection = connectionFactory.getConnection();
+		
+		assert false;
+	}
 	
 	protected void setup() {
-
 		// Register the service with the DFAgent
 		addBehaviour(new RegisterServiceBehaviour(this, SERVICE_NAME, SERVICE_TYPE));		
 		// Create the message template for the contract net interaction protocol
