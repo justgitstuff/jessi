@@ -79,7 +79,7 @@ public class ConnectionFactory {
 	private void loadProperties(){
 		try {
 			properties.load(new FileInputStream(confFile));
-			System.out.println("Se cargo bien");
+			log("DB Properties file loaded correctly");
 		} catch (FileNotFoundException e) {
 			logError("Properties file for the DB connection not found.");
 			e.printStackTrace();

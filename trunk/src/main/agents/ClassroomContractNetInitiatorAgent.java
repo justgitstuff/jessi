@@ -38,7 +38,7 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 	private int nResponders;
 	// The message that is sent to the contract network, this is changed for
 	// every new classroom request
-	ACLMessage msg;
+	private ACLMessage msg;
 	// Time between searches for agents that offer the classroom-search service
 	private final long TIME_BETWEEN_SEARCHES = 10000L;
 	// CFP flag, indicates if a request to the CN is already being made

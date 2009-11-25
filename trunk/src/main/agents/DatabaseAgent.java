@@ -18,6 +18,10 @@ public class DatabaseAgent extends Agent {
 	private Connection connection;
 	// Database name
 	private String dbName;
+	// SQL Connection timeout maximum waiting time (in seconds);
+	private int TIMEOUT_WAIT_TIME = 5;
+	// System independent line separator
+	private final String NL = System.getProperty("line.separator");
 
 	/**
 	 * Initialize the database name and the connection to the database server.
@@ -42,23 +46,23 @@ public class DatabaseAgent extends Agent {
 
 		@Override
 		public void action() {
-			ACLMessage msg = receive(MessageTemplate
-					.MatchPerformative(ACLMessage.REQUEST));
+			MessageTemplate mt = MessageTemplate.MatchPerformative(
+								 ACLMessage.REQUEST);
+			ACLMessage msg = receive(mt);
 			if (msg != null) {
 				ResultSetMetaData resultMeta;
 				ResultSet result;
 				String replyMsg = "";
 				try {
-					if (!connection.isValid(100)) {
+					if (!connection.isValid(TIMEOUT_WAIT_TIME)) {
 						connection = factory.getConnection(dbName);
 					}
-					result = connection.prepareStatement(msg.getContent())
-							.executeQuery();
+					result = connection.prepareStatement(msg.getContent()).executeQuery();
 					resultMeta = result.getMetaData();
 					while (result.next()) {
 						for (int i = 0; i < resultMeta.getColumnCount(); i++) {
 							if (i == resultMeta.getColumnCount() - 1) {
-								replyMsg += result.getString(i) + "/n";
+								replyMsg += result.getString(i) + NL;
 							} else {
 								replyMsg += result.getString(i) + ",";
 							}
@@ -71,7 +75,7 @@ public class DatabaseAgent extends Agent {
 				reply.setContent(replyMsg);
 				myAgent.send(reply);
 				log(myAgent, "sent answer message with query result.");
-			} else {
+			} else { // No message received, block.
 				block();
 			}
 		}
