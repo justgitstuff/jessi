@@ -5,6 +5,7 @@ import static misc.DebugFunctions.logError;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import static misc.DebugFunctions.*;
 
@@ -52,30 +53,19 @@ public class Asignacion extends Model {
 			Connection c = Model.getDBConnection();
 			
 			if (borrarTabla) {
-				query = "DROP TABLE IF EXISTS `itesm`.`asignacion`; " +
-						"CREATE TABLE  `itesm`.`asignacion` ( " + 
-						"`Grupo_Id` int(11) NOT NULL DEFAULT '0', " + 
-						"`Profesor_Id` int(11) NOT NULL DEFAULT '0', " + 
-						"`Lugar_Id` int(11) NOT NULL DEFAULT '0', " +
-						"`Horario_Disp_Id` int(11) DEFAULT NULL, " + 
-						"PRIMARY KEY (`Grupo_Id`,`Profesor_Id`,`Lugar_Id`), " + 
-						"KEY `Profesor_Id` (`Profesor_Id`), " + 
-						"KEY `Lugar_Id` (`Lugar_Id`), " + 
-						"KEY `Horario_Disp_Id` (`Horario_Disp_Id`) " +
-						") ENGINE=MyISAM DEFAULT CHARSET=latin1; ";
+				Statement st = c.createStatement();
 				
-				PreparedStatement s = c.prepareStatement(query);
-				s.executeQuery();
+				st.executeUpdate("DELETE FROM asignacion;");
 			}
 			
 			for(Asignacion a: asignaciones) {
 				query = "INSERT INTO asignacion VALUES(" + a.getGrupoId() +
 							   "," + a.getProf().getId() + "," + a.getLugar().getId() + 
-							   "," + a.getHorario().getId() + ";";
+							   "," + a.getHorario().getId() + ");";
 				
 				log("Executing query: " + query);
 				PreparedStatement s = c.prepareStatement(query);
-				s.executeQuery();
+				s.executeUpdate();
 			}
 		} catch (SQLException e) {
 			logError("SQL Statement failed: " + query);
