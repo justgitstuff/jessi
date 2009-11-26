@@ -223,6 +223,7 @@ public class ClassroomContractNetResponderAgent extends Agent {
 					LinkedHashSet<Horario> intersection = new LinkedHashSet<Horario>();
 					intersection.addAll(horarioProf);
 					intersection.retainAll(horarioLugar);
+					
 					if (lugar.getCapacidad() >= capacidad
 							&& intersection.size() > 0) {
 						Horario horario = null;
@@ -237,15 +238,23 @@ public class ClassroomContractNetResponderAgent extends Agent {
 						// Genera la propuesta y termina
 						proposal = new Asignacion(grupoId, prof, lugar, horario);
 						proposal_value = 1 + (lugares.size() - lugarCount);
-						break;
 					}
 					lugarCount++;
+					
+					if(proposal != null) {
+						break;
+					}
 				}
 			} catch (SQLException e) {
 				logError(myAgent, e.getMessage());
 				return PROPOSAL_ERROR;
 			}
-			log(myAgent, "Proposal is" + proposal.toString());
+			
+			if(proposal == null) {
+				return PROPOSAL_ERROR;
+			}
+			
+			log(myAgent, "Proposal is" + proposal.toString());	
 			return proposal_value;
 		}
 
