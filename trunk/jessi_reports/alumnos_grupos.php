@@ -23,7 +23,7 @@ include 'db_open.php';
     <tr height="50"><td></td></tr>
     <tr><td><b><font color="#006699">SISTEMA DE CALENDARIZACIÓN</font></b></td></tr>
     <tr height="20"><td></td></tr>
-    <tr><td><b><font color="#000000">[ REPORTES - ALUMNOS > GRUPOS ]</font></b></td></tr>
+    <tr><td><b><font color="#000000">[ REPORTES - ALUMNOS > GRUPOS POSIBLES ]</font></b></td></tr>
     <tr height="50"><td></td></tr>
     <tr><td>
             <?php
