@@ -1,4 +1,4 @@
-package main.agents;
+package agents;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -16,7 +16,9 @@ import misc.Pair;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import main.agents.ConnectionFactory;
+
+import agents.behaviours.SearchServiceBehaviour;
+import agents.database.ConnectionFactory;
 import static misc.DebugFunctions.*;
 
 // TODO: Delete this comment.
