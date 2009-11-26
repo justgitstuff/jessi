@@ -3,8 +3,6 @@ package main.agents;
 import models.*;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
@@ -34,7 +32,6 @@ public class ClassroomContractNetResponderAgent extends Agent {
 	private Connection connection;
 	private LinkedList<Profesor> profesores;
 	private LinkedList<Lugar> lugares;
-	
 	
 	public ClassroomContractNetResponderAgent() throws SQLException {
 		super(); // Call the agent constructor		
@@ -95,7 +92,6 @@ public class ClassroomContractNetResponderAgent extends Agent {
 		protected ACLMessage prepareResponse(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
 			log(myAgent, "CFP received from " + cfp.getSender().getName());
 			log(myAgent, "Action is " + cfp.getContent());
-			
 			int proposal = evaluateAction();
 			if (proposal > 0) {
 				// We provide a proposal
@@ -135,18 +131,6 @@ public class ClassroomContractNetResponderAgent extends Agent {
 		protected void handleRejectProposal(ACLMessage cfp, ACLMessage propose, ACLMessage reject) {
 			// Output that the proposal was rejected and do nothing about it
 			System.out.println("Agent " + getLocalName() + ": Proposal rejected");
-		}
-	}
-	
-	private ResultSet executeSQLStatement(String query) {
-		try {
-			PreparedStatement s = connection.prepareStatement(query);
-			return s.executeQuery();
-			
-		} catch (SQLException e) {
-			logError(this, "SQL Statement failed: " + query);
-			e.printStackTrace();
-			return null;
 		}
 	}
 }

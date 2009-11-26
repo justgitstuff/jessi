@@ -105,7 +105,6 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 			myAgent.addBehaviour(new ClassroomContractNetInitiatorBehaviour(myAgent, msg));
 		}
 	}
-
 	
 	/**
 	 * This Behaviour extends the ContractNetInitiatior Behaviour. Once the 
