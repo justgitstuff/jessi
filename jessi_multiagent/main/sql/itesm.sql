@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-11-25 23:35:01
+Date: 2009-11-26 02:39:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,14 +40,16 @@ CREATE TABLE `alumno` (
   `Alumno_Carrera` varchar(5) DEFAULT NULL,
   `Alumno_Semestre` int(11) DEFAULT NULL,
   PRIMARY KEY (`Alumno_Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of alumno
 -- ----------------------------
-INSERT INTO `alumno` VALUES ('1', '667457', 'Roberto Gómez Bolaños', 'LATI', '4');
-INSERT INTO `alumno` VALUES ('2', '239237', 'Juan Rey', '', '9');
+INSERT INTO `alumno` VALUES ('2', '239237', 'Juan Rey', 'ITC', '9');
 INSERT INTO `alumno` VALUES ('3', '676554', 'Juan Perez', 'ISC', '3');
+INSERT INTO `alumno` VALUES ('4', '1982732', 'Harry Potter', 'ITIC', '5');
+INSERT INTO `alumno` VALUES ('5', '7388432', 'Pepito El de los Chistes', 'ITC', '3');
+INSERT INTO `alumno` VALUES ('6', '432364', 'Cristian Sneyder', 'ISC', '4');
 
 -- ----------------------------
 -- Table structure for `alumno_grupo`
@@ -83,6 +85,15 @@ CREATE TABLE `asignacion` (
 -- ----------------------------
 -- Records of asignacion
 -- ----------------------------
+INSERT INTO `asignacion` VALUES ('1', '1', '1', '4');
+INSERT INTO `asignacion` VALUES ('2', '8', '2', '16');
+INSERT INTO `asignacion` VALUES ('3', '1', '3', '10');
+INSERT INTO `asignacion` VALUES ('4', '5', '1', '1');
+INSERT INTO `asignacion` VALUES ('5', '11', '5', '6');
+INSERT INTO `asignacion` VALUES ('6', '5', '6', '3');
+INSERT INTO `asignacion` VALUES ('7', '17', '3', '7');
+INSERT INTO `asignacion` VALUES ('8', '19', '8', '7');
+INSERT INTO `asignacion` VALUES ('9', '5', '9', '12');
 
 -- ----------------------------
 -- Table structure for `carrera`
@@ -374,13 +385,23 @@ DROP TABLE IF EXISTS `grupo`;
 CREATE TABLE `grupo` (
   `Grupo_Id` int(11) NOT NULL AUTO_INCREMENT,
   `Materia_Id` varchar(8) DEFAULT NULL,
+  `Grupo_Capacidad` int(11) DEFAULT NULL,
   PRIMARY KEY (`Grupo_Id`),
   KEY `Materia_Id` (`Materia_Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of grupo
 -- ----------------------------
+INSERT INTO `grupo` VALUES ('1', 'CB00821', '25');
+INSERT INTO `grupo` VALUES ('2', 'CB00821', '25');
+INSERT INTO `grupo` VALUES ('3', 'CB00831', '20');
+INSERT INTO `grupo` VALUES ('4', 'CB00841', '20');
+INSERT INTO `grupo` VALUES ('5', 'CB00841', '20');
+INSERT INTO `grupo` VALUES ('6', 'CB00858', '22');
+INSERT INTO `grupo` VALUES ('7', 'CB00858', '22');
+INSERT INTO `grupo` VALUES ('8', 'CB00858', '22');
+INSERT INTO `grupo` VALUES ('9', 'CB00858', '24');
 
 -- ----------------------------
 -- Table structure for `hora`
