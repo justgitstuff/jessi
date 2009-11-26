@@ -1,5 +1,3 @@
-<<<<<<< .mine
-=======
 /*
 Navicat MySQL Data Transfer
 
@@ -12,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-11-25 23:05:22
+Date: 2009-11-25 23:26:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -53,8 +51,9 @@ CREATE TABLE `alumno` (
 -- ----------------------------
 DROP TABLE IF EXISTS `alumno_grupo`;
 CREATE TABLE `alumno_grupo` (
-  `Grupo_Id` int(11) DEFAULT NULL,
-  `Alumno_Id` int(11) DEFAULT NULL,
+  `Grupo_Id` int(11) NOT NULL DEFAULT '0',
+  `Alumno_Id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Grupo_Id`,`Alumno_Id`),
   KEY `Grupo_Id` (`Grupo_Id`),
   KEY `Alumno_Id` (`Alumno_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -106,9 +105,10 @@ INSERT INTO `carrera` VALUES ('LSCA', 'Licenciado en Sistemas Computacionales y 
 -- ----------------------------
 DROP TABLE IF EXISTS `carrera_materia`;
 CREATE TABLE `carrera_materia` (
-  `Carrera_Id` varchar(5) DEFAULT NULL,
-  `Materia_Id` varchar(20) DEFAULT NULL,
+  `Carrera_Id` varchar(5) NOT NULL DEFAULT '',
+  `Materia_Id` varchar(20) NOT NULL DEFAULT '',
   `Semestre` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Carrera_Id`,`Materia_Id`),
   KEY `Carrera_Id` (`Carrera_Id`),
   KEY `Materia_Id` (`Materia_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -737,8 +737,9 @@ INSERT INTO `profesor` VALUES ('20', 'Claudia Bellido', 'Cátedra');
 -- ----------------------------
 DROP TABLE IF EXISTS `profesor_horario`;
 CREATE TABLE `profesor_horario` (
-  `Horario_Disp_Id` int(11) DEFAULT NULL,
-  `Profesor_Id` int(11) DEFAULT NULL,
+  `Horario_Disp_Id` int(11) NOT NULL DEFAULT '0',
+  `Profesor_Id` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`Horario_Disp_Id`,`Profesor_Id`),
   KEY `Horario_Disp_Id` (`Horario_Disp_Id`),
   KEY `Profesor_Id` (`Profesor_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -747,102 +748,102 @@ CREATE TABLE `profesor_horario` (
 -- Records of profesor_horario
 -- ----------------------------
 INSERT INTO `profesor_horario` VALUES ('1', '1');
-INSERT INTO `profesor_horario` VALUES ('5', '1');
-INSERT INTO `profesor_horario` VALUES ('3', '1');
-INSERT INTO `profesor_horario` VALUES ('20', '1');
-INSERT INTO `profesor_horario` VALUES ('17', '2');
-INSERT INTO `profesor_horario` VALUES ('20', '2');
-INSERT INTO `profesor_horario` VALUES ('2', '2');
-INSERT INTO `profesor_horario` VALUES ('4', '2');
-INSERT INTO `profesor_horario` VALUES ('6', '2');
-INSERT INTO `profesor_horario` VALUES ('7', '3');
-INSERT INTO `profesor_horario` VALUES ('3', '3');
-INSERT INTO `profesor_horario` VALUES ('4', '3');
-INSERT INTO `profesor_horario` VALUES ('5', '3');
 INSERT INTO `profesor_horario` VALUES ('1', '3');
 INSERT INTO `profesor_horario` VALUES ('1', '4');
-INSERT INTO `profesor_horario` VALUES ('2', '4');
-INSERT INTO `profesor_horario` VALUES ('3', '4');
-INSERT INTO `profesor_horario` VALUES ('4', '4');
-INSERT INTO `profesor_horario` VALUES ('5', '4');
-INSERT INTO `profesor_horario` VALUES ('15', '5');
-INSERT INTO `profesor_horario` VALUES ('16', '5');
-INSERT INTO `profesor_horario` VALUES ('17', '5');
-INSERT INTO `profesor_horario` VALUES ('18', '5');
-INSERT INTO `profesor_horario` VALUES ('19', '5');
-INSERT INTO `profesor_horario` VALUES ('5', '6');
-INSERT INTO `profesor_horario` VALUES ('3', '6');
-INSERT INTO `profesor_horario` VALUES ('6', '6');
-INSERT INTO `profesor_horario` VALUES ('7', '6');
-INSERT INTO `profesor_horario` VALUES ('8', '6');
-INSERT INTO `profesor_horario` VALUES ('11', '6');
-INSERT INTO `profesor_horario` VALUES ('13', '7');
-INSERT INTO `profesor_horario` VALUES ('15', '7');
-INSERT INTO `profesor_horario` VALUES ('16', '7');
-INSERT INTO `profesor_horario` VALUES ('17', '7');
-INSERT INTO `profesor_horario` VALUES ('19', '7');
-INSERT INTO `profesor_horario` VALUES ('21', '8');
-INSERT INTO `profesor_horario` VALUES ('11', '8');
-INSERT INTO `profesor_horario` VALUES ('10', '8');
-INSERT INTO `profesor_horario` VALUES ('2', '8');
-INSERT INTO `profesor_horario` VALUES ('5', '8');
-INSERT INTO `profesor_horario` VALUES ('7', '9');
-INSERT INTO `profesor_horario` VALUES ('15', '9');
-INSERT INTO `profesor_horario` VALUES ('16', '9');
-INSERT INTO `profesor_horario` VALUES ('18', '9');
-INSERT INTO `profesor_horario` VALUES ('12', '9');
-INSERT INTO `profesor_horario` VALUES ('13', '9');
-INSERT INTO `profesor_horario` VALUES ('12', '10');
-INSERT INTO `profesor_horario` VALUES ('18', '10');
 INSERT INTO `profesor_horario` VALUES ('1', '10');
-INSERT INTO `profesor_horario` VALUES ('2', '10');
-INSERT INTO `profesor_horario` VALUES ('3', '11');
-INSERT INTO `profesor_horario` VALUES ('4', '11');
-INSERT INTO `profesor_horario` VALUES ('5', '12');
-INSERT INTO `profesor_horario` VALUES ('6', '12');
-INSERT INTO `profesor_horario` VALUES ('7', '12');
-INSERT INTO `profesor_horario` VALUES ('8', '12');
-INSERT INTO `profesor_horario` VALUES ('9', '12');
 INSERT INTO `profesor_horario` VALUES ('1', '13');
-INSERT INTO `profesor_horario` VALUES ('2', '13');
-INSERT INTO `profesor_horario` VALUES ('10', '13');
-INSERT INTO `profesor_horario` VALUES ('15', '13');
-INSERT INTO `profesor_horario` VALUES ('16', '14');
-INSERT INTO `profesor_horario` VALUES ('17', '14');
-INSERT INTO `profesor_horario` VALUES ('21', '14');
-INSERT INTO `profesor_horario` VALUES ('20', '15');
-INSERT INTO `profesor_horario` VALUES ('14', '15');
-INSERT INTO `profesor_horario` VALUES ('11', '15');
-INSERT INTO `profesor_horario` VALUES ('2', '15');
-INSERT INTO `profesor_horario` VALUES ('5', '16');
-INSERT INTO `profesor_horario` VALUES ('8', '16');
-INSERT INTO `profesor_horario` VALUES ('2', '16');
-INSERT INTO `profesor_horario` VALUES ('7', '16');
-INSERT INTO `profesor_horario` VALUES ('4', '17');
-INSERT INTO `profesor_horario` VALUES ('5', '17');
-INSERT INTO `profesor_horario` VALUES ('2', '17');
 INSERT INTO `profesor_horario` VALUES ('1', '17');
-INSERT INTO `profesor_horario` VALUES ('12', '18');
-INSERT INTO `profesor_horario` VALUES ('14', '18');
 INSERT INTO `profesor_horario` VALUES ('1', '18');
-INSERT INTO `profesor_horario` VALUES ('18', '18');
-INSERT INTO `profesor_horario` VALUES ('3', '18');
-INSERT INTO `profesor_horario` VALUES ('4', '18');
-INSERT INTO `profesor_horario` VALUES ('5', '19');
-INSERT INTO `profesor_horario` VALUES ('2', '19');
 INSERT INTO `profesor_horario` VALUES ('1', '19');
+INSERT INTO `profesor_horario` VALUES ('2', '2');
+INSERT INTO `profesor_horario` VALUES ('2', '4');
+INSERT INTO `profesor_horario` VALUES ('2', '8');
+INSERT INTO `profesor_horario` VALUES ('2', '10');
+INSERT INTO `profesor_horario` VALUES ('2', '13');
+INSERT INTO `profesor_horario` VALUES ('2', '15');
+INSERT INTO `profesor_horario` VALUES ('2', '16');
+INSERT INTO `profesor_horario` VALUES ('2', '17');
 INSERT INTO `profesor_horario` VALUES ('2', '19');
+INSERT INTO `profesor_horario` VALUES ('3', '1');
+INSERT INTO `profesor_horario` VALUES ('3', '3');
+INSERT INTO `profesor_horario` VALUES ('3', '4');
+INSERT INTO `profesor_horario` VALUES ('3', '6');
+INSERT INTO `profesor_horario` VALUES ('3', '11');
+INSERT INTO `profesor_horario` VALUES ('3', '18');
+INSERT INTO `profesor_horario` VALUES ('3', '19');
+INSERT INTO `profesor_horario` VALUES ('4', '2');
+INSERT INTO `profesor_horario` VALUES ('4', '3');
+INSERT INTO `profesor_horario` VALUES ('4', '4');
+INSERT INTO `profesor_horario` VALUES ('4', '11');
+INSERT INTO `profesor_horario` VALUES ('4', '17');
+INSERT INTO `profesor_horario` VALUES ('4', '18');
+INSERT INTO `profesor_horario` VALUES ('5', '1');
+INSERT INTO `profesor_horario` VALUES ('5', '3');
+INSERT INTO `profesor_horario` VALUES ('5', '4');
+INSERT INTO `profesor_horario` VALUES ('5', '6');
+INSERT INTO `profesor_horario` VALUES ('5', '8');
+INSERT INTO `profesor_horario` VALUES ('5', '12');
+INSERT INTO `profesor_horario` VALUES ('5', '16');
+INSERT INTO `profesor_horario` VALUES ('5', '17');
+INSERT INTO `profesor_horario` VALUES ('5', '19');
+INSERT INTO `profesor_horario` VALUES ('6', '2');
+INSERT INTO `profesor_horario` VALUES ('6', '6');
+INSERT INTO `profesor_horario` VALUES ('6', '12');
+INSERT INTO `profesor_horario` VALUES ('7', '3');
+INSERT INTO `profesor_horario` VALUES ('7', '6');
+INSERT INTO `profesor_horario` VALUES ('7', '9');
+INSERT INTO `profesor_horario` VALUES ('7', '12');
+INSERT INTO `profesor_horario` VALUES ('7', '16');
+INSERT INTO `profesor_horario` VALUES ('8', '6');
+INSERT INTO `profesor_horario` VALUES ('8', '12');
+INSERT INTO `profesor_horario` VALUES ('8', '16');
 INSERT INTO `profesor_horario` VALUES ('8', '19');
-INSERT INTO `profesor_horario` VALUES ('18', '20');
-INSERT INTO `profesor_horario` VALUES ('17', '20');
-INSERT INTO `profesor_horario` VALUES ('16', '20');
-INSERT INTO `profesor_horario` VALUES ('15', '20');
-INSERT INTO `profesor_horario` VALUES ('14', '20');
-INSERT INTO `profesor_horario` VALUES ('13', '20');
-INSERT INTO `profesor_horario` VALUES ('12', '20');
-INSERT INTO `profesor_horario` VALUES ('11', '20');
-INSERT INTO `profesor_horario` VALUES ('10', '20');
+INSERT INTO `profesor_horario` VALUES ('9', '12');
 INSERT INTO `profesor_horario` VALUES ('9', '20');
+INSERT INTO `profesor_horario` VALUES ('10', '8');
+INSERT INTO `profesor_horario` VALUES ('10', '13');
+INSERT INTO `profesor_horario` VALUES ('10', '20');
+INSERT INTO `profesor_horario` VALUES ('11', '6');
+INSERT INTO `profesor_horario` VALUES ('11', '8');
+INSERT INTO `profesor_horario` VALUES ('11', '15');
+INSERT INTO `profesor_horario` VALUES ('11', '20');
+INSERT INTO `profesor_horario` VALUES ('12', '9');
+INSERT INTO `profesor_horario` VALUES ('12', '10');
+INSERT INTO `profesor_horario` VALUES ('12', '18');
+INSERT INTO `profesor_horario` VALUES ('12', '20');
+INSERT INTO `profesor_horario` VALUES ('13', '7');
+INSERT INTO `profesor_horario` VALUES ('13', '9');
+INSERT INTO `profesor_horario` VALUES ('13', '20');
+INSERT INTO `profesor_horario` VALUES ('14', '15');
+INSERT INTO `profesor_horario` VALUES ('14', '18');
+INSERT INTO `profesor_horario` VALUES ('14', '20');
+INSERT INTO `profesor_horario` VALUES ('15', '5');
+INSERT INTO `profesor_horario` VALUES ('15', '7');
+INSERT INTO `profesor_horario` VALUES ('15', '9');
+INSERT INTO `profesor_horario` VALUES ('15', '13');
+INSERT INTO `profesor_horario` VALUES ('15', '20');
+INSERT INTO `profesor_horario` VALUES ('16', '5');
+INSERT INTO `profesor_horario` VALUES ('16', '7');
+INSERT INTO `profesor_horario` VALUES ('16', '9');
+INSERT INTO `profesor_horario` VALUES ('16', '14');
+INSERT INTO `profesor_horario` VALUES ('16', '20');
+INSERT INTO `profesor_horario` VALUES ('17', '2');
+INSERT INTO `profesor_horario` VALUES ('17', '5');
+INSERT INTO `profesor_horario` VALUES ('17', '7');
+INSERT INTO `profesor_horario` VALUES ('17', '14');
+INSERT INTO `profesor_horario` VALUES ('17', '20');
+INSERT INTO `profesor_horario` VALUES ('18', '5');
+INSERT INTO `profesor_horario` VALUES ('18', '9');
+INSERT INTO `profesor_horario` VALUES ('18', '10');
+INSERT INTO `profesor_horario` VALUES ('18', '18');
+INSERT INTO `profesor_horario` VALUES ('18', '20');
+INSERT INTO `profesor_horario` VALUES ('19', '5');
+INSERT INTO `profesor_horario` VALUES ('19', '7');
+INSERT INTO `profesor_horario` VALUES ('20', '1');
+INSERT INTO `profesor_horario` VALUES ('20', '2');
+INSERT INTO `profesor_horario` VALUES ('20', '15');
+INSERT INTO `profesor_horario` VALUES ('21', '8');
+INSERT INTO `profesor_horario` VALUES ('21', '14');
 
 -- ----------------------------
 -- Table structure for `profesor_materia`
@@ -983,4 +984,3 @@ INSERT INTO `profesor_materia` VALUES ('TI3023', '7', '2');
 INSERT INTO `profesor_materia` VALUES ('TI3024', '12', '3');
 INSERT INTO `profesor_materia` VALUES ('TI3024', '13', '1');
 INSERT INTO `profesor_materia` VALUES ('TI3024', '15', '1');
->>>>>>> .r32
