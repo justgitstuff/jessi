@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-11-25 22:35:12
+Date: 2009-11-25 22:48:09
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -366,7 +366,7 @@ INSERT INTO `dia` VALUES ('9', 'LMWJV');
 -- ----------------------------
 DROP TABLE IF EXISTS `grupo`;
 CREATE TABLE `grupo` (
-  `Grupo_Id` int(11) NOT NULL DEFAULT '0',
+  `Grupo_Id` int(11) NOT NULL AUTO_INCREMENT,
   `Materia_Id` varchar(8) DEFAULT NULL,
   PRIMARY KEY (`Grupo_Id`),
   KEY `Materia_Id` (`Materia_Id`)
