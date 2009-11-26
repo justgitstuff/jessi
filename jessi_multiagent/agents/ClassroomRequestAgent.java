@@ -225,7 +225,7 @@ public class ClassroomRequestAgent extends Agent {
 					conexion.prepareStatement(
 							"INSERT into grupo(Materia_Id, Grupo_Capacidad ) values (\""
 									+ materia + "\",\""
-									+ Math.ceil(GroupsCapacity / nuGroups)
+									+ Math.ceil(result.getDouble(2) / nuGroups)
 									+ "\");").executeUpdate();
 				}
 			}

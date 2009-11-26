@@ -53,6 +53,7 @@ public class ClassroomContractNetResponderAgent extends Agent {
 			profesores = Profesor.createAll();
 			lugares = Lugar.createAll();
 			Collections.sort(lugares);
+			asignaciones = new LinkedList<Asignacion>();
 		} catch (SQLException e) {
 			logError(this, "Fatal error in the database.");
 			e.printStackTrace();
@@ -99,7 +100,7 @@ public class ClassroomContractNetResponderAgent extends Agent {
 			ResultSet result = s.executeQuery();
 			result.first();
 			capacidad = result.getInt("Grupo_Capacidad");
-			log(this, "Capacity for the group " + grupoId + "is " + capacidad);
+			log(this, "Capacity for the group " + grupoId + " is " + capacidad);
 		} catch (SQLException e) {
 			logError(this, e.getMessage());
 			logError(this, "Error getting the capacity of a course");
@@ -150,14 +151,14 @@ public class ClassroomContractNetResponderAgent extends Agent {
 			}
 			int grupoId = Integer.parseInt(m.group(1));
 			int profId = Integer.parseInt(m.group(2));
-			int proposal = getClassroomProposal(grupoId, profId);
+			int proposalValue = getClassroomProposal(grupoId, profId);
 			// If there is a proposal, communicate so
-			if (proposal > PROPOSAL_ERROR) {
+			if (proposalValue > PROPOSAL_ERROR) {
 				// We provide a proposal
-				log(myAgent, "Proposing " + proposal);
+				log(myAgent, "Proposing " + proposalValue);
 				ACLMessage propose = cfp.createReply();
 				propose.setPerformative(ACLMessage.PROPOSE);
-				propose.setContent(String.valueOf(proposal));
+				propose.setContent(String.valueOf(proposalValue));
 				return propose;
 				// No proposal refuse by default
 			} else {
