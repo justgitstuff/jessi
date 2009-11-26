@@ -41,6 +41,7 @@ public class ClassroomContractNetResponderAgent extends Agent {
 	private Connection connection;
 	private LinkedList<Profesor> profesores;
 	private LinkedList<Lugar> lugares;
+	private LinkedList<Asignacion> asignaciones;
 	// Regex to parse the responses of the type (group_id, professor_id)
 	private final String REGEX = "\\((\\d+),(\\d+)\\)";
 
@@ -61,14 +62,11 @@ public class ClassroomContractNetResponderAgent extends Agent {
 
 	protected void setup() {
 		// Register the service with the DFAgent
-		addBehaviour(new RegisterServiceBehaviour(this, SERVICE_NAME,
-				SERVICE_TYPE));
+		addBehaviour(new RegisterServiceBehaviour(this, SERVICE_NAME, SERVICE_TYPE));
 		// Create the message template for the contract net interaction protocol
 		log(this, " waiting for CFP...");
-		MessageTemplate template = MessageTemplate
-				.and(
-						MessageTemplate
-								.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
+		MessageTemplate template = MessageTemplate.and(
+						MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
 						MessageTemplate.MatchPerformative(ACLMessage.CFP));
 		addBehaviour(new ClassroomContractNetResponderBehaviour(this, template));
 	}
@@ -123,10 +121,7 @@ public class ClassroomContractNetResponderAgent extends Agent {
 
 		// Proposal value that is selected
 		// This should be different every result
-		private Lugar lugarProposal = null;
-		private Profesor profProposal = null;
-		private Horario horarioProposal = null;
-
+		private Asignacion proposal = null;
 		// Proposal error
 		private static final int PROPOSAL_ERROR = 0;
 
@@ -212,18 +207,16 @@ public class ClassroomContractNetResponderAgent extends Agent {
 				Profesor prof = findProfessor(profesorId);
 				// Fail if the professor isn't found
 				if (prof == null) {
-					logError(myAgent, "Professor with id " + profesorId
-							+ " not found.");
+					logError(myAgent, "Professor with id " + profesorId + " not found.");
 					return PROPOSAL_ERROR;
 				}
 
 				int capacidad = getCapacidad(grupoId);
 
-				int lugarPlace = 0;
+				int lugarCount = 0;
 				for (Lugar lugar : lugares) {
 					LinkedHashSet<Horario> horarioProf = prof.getHorarioDisp();
-					LinkedHashSet<Horario> horarioLugar = lugar
-							.getHorarioDisp();
+					LinkedHashSet<Horario> horarioLugar = lugar.getHorarioDisp();
 					// The available hour is the intersection between
 					// this two sets
 					LinkedHashSet<Horario> intersection = new LinkedHashSet<Horario>();
@@ -231,28 +224,28 @@ public class ClassroomContractNetResponderAgent extends Agent {
 					intersection.retainAll(horarioLugar);
 					if (lugar.getCapacidad() >= capacidad
 							&& intersection.size() > 0) {
-						// Set the proposal and finish
-						lugarProposal = lugar;
-						profProposal = prof;
-						// Get the first horario
+						Horario horario = null;
+						// El primer horario disponible
 						for (Horario h : intersection) {
-							horarioProposal = h;
+							horario = h;
 							break;
 						}
-						proposal_value = 1 + (lugares.size() - lugarPlace);
+						
+						assert horario != null;
+						
+						// Genera la propuesta y termina
+						proposal = new Asignacion(grupoId, prof, lugar, horario);
+						proposal_value = 1 + (lugares.size() - lugarCount);
 						break;
 					}
-					lugarPlace++;
+					lugarCount++;
 				}
 			} catch (SQLException e) {
 				logError(myAgent, e.getMessage());
 				return PROPOSAL_ERROR;
 			}
 
-			String msg = "Porposal for (" + profesorId + "," + grupoId + ")"
-					+ "is: " + lugarProposal.toString() + " "
-					+ horarioProposal.toString();
-			log(myAgent, msg);
+			log(myAgent, "Proposal is" + proposal.toString());
 			return proposal_value;
 		}
 
@@ -260,14 +253,12 @@ public class ClassroomContractNetResponderAgent extends Agent {
 		private boolean setClassroomProposal() {
 
 			boolean result = true;
-			result &= profProposal.setHorarioBusy(horarioProposal);
-			result &= lugarProposal.setHorarioBusy(horarioProposal);
+			result &= proposal.getProf().setHorarioBusy(proposal.getHorario().getId());
+			result &= proposal.getLugar().setHorarioBusy(proposal.getHorario().getId());
 
+			asignaciones.add(proposal);
 			// Reset the proposal values
-			lugarProposal = null;
-			profProposal = null;
-			horarioProposal = null;
-
+			proposal = null;
 			return result;
 		}
 	}
