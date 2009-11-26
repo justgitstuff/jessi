@@ -44,6 +44,8 @@ public class ClassroomContractNetResponderAgent extends Agent {
 	private LinkedList<Asignacion> asignaciones;
 	// Regex to parse the responses of the type (group_id, professor_id)
 	private final String REGEX = "\\((\\d+),(\\d+)\\)";
+	
+	boolean terminate;
 
 	public ClassroomContractNetResponderAgent() throws SQLException {
 		super(); // Call the agent constructor
@@ -151,6 +153,14 @@ public class ClassroomContractNetResponderAgent extends Agent {
 			}
 			int grupoId = Integer.parseInt(m.group(1));
 			int profId = Integer.parseInt(m.group(2));
+			
+			// TODO: Delete this, ugly way to finish, should propagate
+			System.out.println(grupoId + "," + profId);
+			if(grupoId == 9 && profId == 17) {
+				System.out.println("LAST VALUE");
+				terminate = true;
+			}
+			
 			int proposalValue = getClassroomProposal(grupoId, profId);
 			// If there is a proposal, communicate so
 			if (proposalValue > PROPOSAL_ERROR) {
@@ -164,7 +174,10 @@ public class ClassroomContractNetResponderAgent extends Agent {
 			} else {
 				// We refuse to provide a proposal
 				log(myAgent, "No proposals for " + content + ", refusing...");
-				throw new RefuseException("evaluation-failed");
+				ACLMessage refuse = cfp.createReply();
+				refuse.setPerformative(ACLMessage.REFUSE);
+				return refuse;	
+				//throw new RefuseException("evaluation-failed");
 			}
 		}
 
@@ -180,8 +193,21 @@ public class ClassroomContractNetResponderAgent extends Agent {
 				log(myAgent, "Classroom successfully assigned");
 				ACLMessage inform = accept.createReply();
 				inform.setPerformative(ACLMessage.INFORM);
+				
+				
+				//TODO: Delete this
+				if(terminate) {
+					System.out.println("FINISHING");
+				}
+				
 				return inform;
 			} else {
+				
+				//TODO: Delete this
+				if(terminate) {
+					System.out.println("FINISHING");
+				}
+				
 				log("Classroom assignment failed");
 				throw new FailureException("unexpected-error");
 			}
