@@ -217,13 +217,13 @@ public class ClassroomRequestAgent extends Agent {
 			while (result.next()) 
 			{
 					// Stores the Materia_Id
-					materia=result.getString(0);
+					materia=result.getString("Materia_Id");
 					// Divides the population and the capacity and results in the number of groups
-					nuGroups=Math.ceil(Integer.parseInt(result.getString(1))/GroupsCapacity);
+					nuGroups=Math.ceil(result.getDouble(2)/GroupsCapacity);
 					// Stores the groups in the database
 					while(nuGroups!=0.0)
 					{
-						conexion.prepareStatement("INSERT into grupo(Materia_Id) values (\""+materia+"\");").executeQuery();
+						conexion.prepareStatement("INSERT into grupo(Materia_Id ) values (\""+materia+"\");").executeUpdate();
 						nuGroups--;
 					}
 			}
@@ -248,7 +248,7 @@ public class ClassroomRequestAgent extends Agent {
 			ResultSetMetaData resultMeta = result.getMetaData();
 			// Iterates over the table of results
 			while (result.next()) {
-				for (int i = 0; i < resultMeta.getColumnCount(); i++) {
+				for (int i = 1; i <=resultMeta.getColumnCount(); i++) {
 					// Stores the resultant groups in a queue
 					groups.offer(result.getString(i));
 				}
