@@ -21,28 +21,30 @@ include 'db_open.php';
 
 	<table align="center" class="AdminSystem" width="400" border="0" cellspacing="0" cellpadding="0">
     <tr height="50"><td></td></tr>
+	<td rowspan="4"><img src="images/JessiLogoWeb.png"></td>
     <tr><td><b><font color="#006699">SISTEMA DE CALENDARIZACIÓN</font></b></td></tr>
     <tr height="20"><td></td></tr>
     <tr><td><b><font color="#000000">[ REPORTES ]</font></b></td></tr>
     <tr height="50"><td></td></tr>
     <tr><td>
-		<table width="100%" border="1" cellpadding="5" cellspacing="5">
+	</table>
+		<table align="center" width="400" border="0" cellpadding="5" cellspacing="5">
     	<tr><td><b><a href="carreras.php">LISTA DE CARRERAS Y MATERIAS</a></b></td></tr>
     	<tr><td><b><a href="alumnos.php">LISTA DE ALUMNOS</a></b></td></tr>
         </table><br />
-		<table width="100%" border="1" cellpadding="5" cellspacing="5">
+		<table align="center" width="400" border="0" cellpadding="5" cellspacing="5">
     	<tr><td><b><a href="profesores.php">HORARIOS DE PROFESORES</a></b></td></tr>
         </table><br />
-		<table width="100%" border="1" cellpadding="5" cellspacing="5">
+		<table align="center" width="400" border="0" cellpadding="5" cellspacing="5">
     	<tr><td><b><a href="materias.php">HORARIOS DE MATERIAS</a></b></td></tr>
         </table><br />
-		<table width="100%" border="1" cellpadding="5" cellspacing="5">
+		<table align="center" width="400" border="0" cellpadding="5" cellspacing="5">
     	<tr><td><b><a href="salones.php">HORARIOS DE SALONES</a></b></td></tr>
     	<tr><td><b><a href="laboratorios.php">HORARIOS DE LABORATORIOS</a></b></td></tr>
         </table><br />
     </td></tr>
     <tr height="30"><td></td></tr>
-    <tr><td><a href="db_admin.php?type=logout">SALIR DEL SISTEMA</a></td></tr>
+    <tr><td><center><a href="db_admin.php?type=logout">SALIR DEL SISTEMA</a></center></td></tr>
     <tr height="30"><td></td></tr>
     </table>
     
@@ -50,7 +52,7 @@ include 'db_open.php';
 	} else {
 	?>
     
-	<table class="LoginBar" width="225" border="0" cellspacing="0" cellpadding="0">
+	<table align="center" class="LoginBar" width="225" border="0" cellspacing="0" cellpadding="0">
     <tr><td><font color="#FF0000">ERROR DE ACCESO</font></td></tr>
     <tr height="10"><td colspan="2"></td></tr>
     <tr><td><a href="index.php">REGRESAR</a></td></tr>

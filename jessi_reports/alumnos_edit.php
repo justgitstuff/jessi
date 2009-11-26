@@ -25,8 +25,9 @@ include 'db_open.php';
 	$row = @mysql_fetch_array($result_type, MYSQL_ASSOC);
 	} ?>
 
-	<table align="center" class="AdminSystem" width="700" border="0" cellspacing="0" cellpadding="0">
+	<table align="center" class="AdminSystem" width="400" border="0" cellspacing="0" cellpadding="0">
     <tr height="50"><td colspan="2"></td></tr>
+    <td rowspan="4"><img src="images/JessiLogoWeb.png"></td>
     <tr><td colspan="2"><b><font color="#006699">SISTEMA DE CALENDARIZACIÓN</font></b></td></tr>
     <tr height="20"><td colspan="2"></td></tr>
     <tr><td colspan="2"><b><font color="#000000">
@@ -34,6 +35,7 @@ include 'db_open.php';
     </font></b></td></tr>
     <tr height="50"><td colspan="2"></td></tr>
     <tr><td>
+	</table>
 		<table align="center" class="AdminSubSystem" width="350" border="0" cellspacing="0" cellpadding="0">
         <?php if (@$_GET['type'] <> "mod"){?><form name="formdb" action="db_admin.php?type=alumno_add" method="post">
         <?php } else {?><form name="formdb" action="db_admin.php?type=alumno_mod&id=<?php echo @$_GET['id'] ?>" method="post"><?php }?>
@@ -91,7 +93,7 @@ include 'db_open.php';
 	    </table>
     </td></tr>
     <tr height="30"><td></td></tr>
-    <tr><td colspan="2"><a href="alumnos.php">REGRESAR</a></td></tr>
+    <tr><td colspan="2"><center><a href="alumnos.php">REGRESAR</a></center></td></tr>
     </table>
     
    	<?php
