@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-11-26 02:39:57
+Date: 2009-11-26 03:24:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,13 +40,13 @@ CREATE TABLE `alumno` (
   `Alumno_Carrera` varchar(5) DEFAULT NULL,
   `Alumno_Semestre` int(11) DEFAULT NULL,
   PRIMARY KEY (`Alumno_Id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of alumno
 -- ----------------------------
-INSERT INTO `alumno` VALUES ('2', '239237', 'Juan Rey', 'ITC', '9');
-INSERT INTO `alumno` VALUES ('3', '676554', 'Juan Perez', 'ISC', '3');
+INSERT INTO `alumno` VALUES ('2', '239237', 'Juan Rey', 'ITC', '1');
+INSERT INTO `alumno` VALUES ('3', '676554', 'Juan Perez', 'ISC', '5');
 INSERT INTO `alumno` VALUES ('4', '1982732', 'Harry Potter', 'ITIC', '5');
 INSERT INTO `alumno` VALUES ('5', '7388432', 'Pepito El de los Chistes', 'ITC', '3');
 INSERT INTO `alumno` VALUES ('6', '432364', 'Cristian Sneyder', 'ISC', '4');
@@ -93,7 +93,7 @@ INSERT INTO `asignacion` VALUES ('5', '11', '5', '6');
 INSERT INTO `asignacion` VALUES ('6', '5', '6', '3');
 INSERT INTO `asignacion` VALUES ('7', '17', '3', '7');
 INSERT INTO `asignacion` VALUES ('8', '19', '8', '7');
-INSERT INTO `asignacion` VALUES ('9', '5', '9', '12');
+INSERT INTO `asignacion` VALUES ('9', '5', '91', '12');
 
 -- ----------------------------
 -- Table structure for `carrera`
