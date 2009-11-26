@@ -107,9 +107,8 @@ public class ClassroomRequestAgent extends Agent {
 				// Set the content for the message, a tuple with the
 				// group id and the professor id
 				if (refusePair == null) {
-					msg
-							.setContent(assignNewProfessor(groups.poll())
-									.toString());
+					lastGroupSent=groups.peek();
+					msg.setContent(assignNewProfessor(groups.poll()).toString());
 				} else {
 					msg.setContent(refusePair.toString());
 					refusePair = null;
@@ -120,6 +119,7 @@ public class ClassroomRequestAgent extends Agent {
 				msg.setReplyWith("classroom-request"
 						+ System.currentTimeMillis());
 				// Send the message
+				
 				myAgent.send(msg);
 				log(myAgent, "Looking for classroom with " + msg.getContent());
 				// Prepare a message hearing template for the response
