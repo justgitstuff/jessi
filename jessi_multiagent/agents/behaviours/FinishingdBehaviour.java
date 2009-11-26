@@ -2,6 +2,7 @@ package agents.behaviours;
 
 import static misc.DebugFunctions.log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jade.core.AID;
@@ -21,6 +22,7 @@ public class FinishingdBehaviour extends CyclicBehaviour{
 	
 	public FinishingdBehaviour() {
 		super();
+		signalPropatagionAgents = new ArrayList<AID>();
 	}
 	
 	@Override
