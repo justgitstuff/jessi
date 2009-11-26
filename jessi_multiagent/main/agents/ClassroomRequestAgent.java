@@ -30,6 +30,7 @@ public class ClassroomRequestAgent extends Agent {
 	private static final long SEARCH_DELTA = 15000L;
 	// String when the response assigned is "OK"
 	private static final String OK = "ok";
+	private int GroupsCapacity=25;
 	// Creates a new Connection Factory....for connections
 	ConnectionFactory factory = new ConnectionFactory();
 	// The list of the agents that provide the contract network service
@@ -65,6 +66,7 @@ public class ClassroomRequestAgent extends Agent {
 		// different groups, so we send each group one by one to request the
 		// classroom
 		fillGroups();
+		obtainGroups();
 		// This behavior should just be added after we got a Collection
 		// with all the group requests ready
 		addBehaviour(new ClassroomRequestBehaviour());
@@ -197,8 +199,43 @@ public class ClassroomRequestAgent extends Agent {
 			return groups.isEmpty() || state == FINISHED;
 		}
 	}
+	
+	private void fillGroups()
+	{
+		// SQL to obtain groups
+		String sql = "SELECT Materia_Id, Materia_Poblacion from Materia;";
+		String materia="";
+		// Generate connection to the database
+		Connection conexion = factory.getConnection();
+		ResultSet result;
+		try {
+			// Obtains ResultSet tables from the execution of the query
+			result = conexion.prepareStatement(sql).executeQuery();
+			// Number of groups
+			int nuGroups=0;
+			// Iterates over the table of results
+			while (result.next()) 
+			{
+					// Stores the Materia_Id
+					materia=result.getString(0);
+					// Divides the population and the capacity and results in the number of groups
+					nuGroups=Math.ceil(Integer.parseInt(result.getString(1))/GroupsCapacity);
+					// Stores the groups in the database
+					while(nuGroups!=0)
+					{
+						conexion.prepareStatement("INSERT into grupo(Materia_Id) values (\""+materia+"\");").executeQuery();
+						nuGroups--;
+					}
+			}
+			conexion.commit();
+		} catch (SQLException e) {
+			logError(this, "SQL Error when filling groups");
+			e.printStackTrace();
+		}
+	}
 
-	private void fillGroups() {
+	private void obtainGroups() 
+	{
 		// SQL to obtain groups
 		String sql = "SELECT Grupo_Id FROM grupo;";
 		// Generate connection to the database
@@ -226,7 +263,7 @@ public class ClassroomRequestAgent extends Agent {
 		professors.clear();
 		// SQL to obtain groups
 		String sql = "SELECT Profesor_Id FROM profesor_materia WHERE Materia_Id=(SELECT Materia_Id FROM grupo WHERE Grupo_Id ="
-				+ group + ") ORDERED BY Prioridad;";
+				+ group + ") ORDER BY Prioridad;";
 		// Generate connection to the database
 		Connection conexion = factory.getConnection();
 		ResultSet result;
