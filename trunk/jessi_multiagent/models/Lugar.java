@@ -10,14 +10,14 @@ import java.sql.SQLException;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 
-public class Lugar extends Model {
+public class Lugar extends Model implements Comparable<Lugar> {
 
 	private int id;
 	private int capacidad;
 	private String tipo;
 	private String codigo;
-	private LinkedHashSet<Horario> horariosDisp;
-	private static final LinkedHashSet<Horario> horariosDispGeneral = generaHorario();
+	private LinkedHashSet<Horario> horarios;
+	private static final LinkedHashSet<Horario> horariosGeneral = generaHorario();
 
 	protected Lugar(int id, int capacidad, String tipo, String codigo)
 			throws SQLException {
@@ -25,13 +25,13 @@ public class Lugar extends Model {
 		this.capacidad = capacidad;
 		this.tipo = tipo;
 		this.codigo = codigo;
-		this.horariosDisp = getHorario();
+		this.horarios = getHorario();
 	}
 
 	@Override
 	public String toString() {
 		return "Lugar(" + id + "," + capacidad + "," + tipo + "," + codigo
-				+ horariosDisp + ")";
+				+ horarios + ")";
 	}
 
 	public int getId() {
@@ -50,24 +50,72 @@ public class Lugar extends Model {
 		return codigo;
 	}
 
-	public LinkedHashSet<Horario> getHorariosDisp() {
-		return horariosDisp;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		return this.id == ((Lugar) obj).id;
 	}
 
-	private LinkedHashSet<Horario> getHorario() throws SQLException {
-		if (horariosDisp == null) {
-			horariosDisp = new LinkedHashSet<Horario>();
-			for (Horario h : horariosDispGeneral) {
-				horariosDisp.add(new Horario(h.getId(), h.getdiaId(), h
+	@Override
+	public int hashCode() {
+		return new Integer(id).hashCode();
+	}
+
+	public LinkedHashSet<Horario> getHorario() throws SQLException {
+		if (horarios == null) {
+			horarios = new LinkedHashSet<Horario>();
+			for (Horario h : horariosGeneral) {
+				horarios.add(new Horario(h.getId(), h.getDiaId(), h
 						.getHoraInicio(), h.getHoraFin()));
 			}
 		}
-		return horariosDisp;
+		return horarios;
+	}
+
+	private LinkedHashSet<Horario> getHorario(boolean busy) throws SQLException {
+		LinkedHashSet<Horario> horarios = new LinkedHashSet<Horario>();
+		for (Horario horario : getHorario()) {
+			if (horario.isBusy() == busy) {
+				horarios.add(horario);
+			}
+		}
+		return horarios;
+
+	}
+
+	public LinkedHashSet<Horario> getHorarioDisp() throws SQLException {
+		return getHorario(false);
+	}
+
+	public LinkedHashSet<Horario> getHorarioBusy() throws SQLException {
+		return getHorario(true);
+	}
+
+	private boolean setHorario(int horarioId, boolean busy) {
+		boolean done = false;
+		for (Horario hr : horarios) {
+			if (hr.getId() == horarioId) {
+				hr.setBusy(busy);
+				done = true;
+				break;
+			}
+		}
+		return done;
+	}
+
+	public boolean setHorarioBusy(int horarioId) {
+		return setHorario(horarioId, true);
+	}
+
+	public boolean setHorarioFree(int horarioId) {
+		return setHorario(horarioId, false);
+	}
+
+	public boolean setHorarioBusy(Horario h) {
+		return setHorario(h.getId(), true);
+	}
+
+	public boolean setHorarioFree(Horario h) {
+		return setHorario(h.getId(), false);
 	}
 
 	// Funcion que regresa regresa un conjunto con todos los horarios indicados
@@ -116,7 +164,7 @@ public class Lugar extends Model {
 		}
 		return lugar;
 	}
-	
+
 	public static LinkedList<Lugar> createAll() throws SQLException {
 
 		LinkedList<Lugar> professors = new LinkedList<Lugar>();
@@ -145,9 +193,8 @@ public class Lugar extends Model {
 		return professors;
 	}
 
-	public static void main(String[] args) throws Exception {
-		for (int i = 1; i < 100; i++) {
-			createLugarFromId(i);
-		}
+	@Override
+	public int compareTo(Lugar o) {
+		return this.capacidad - o.capacidad;
 	}
 }

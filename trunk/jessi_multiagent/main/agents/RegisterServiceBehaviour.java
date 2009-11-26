@@ -10,21 +10,22 @@ import static misc.DebugFunctions.*;
 
 /**
  * Simple class to register a service with the DFAgent, just add this
- * OneShotBehaviour, send it an agent, the service type and the service
- * as a String.
+ * OneShotBehaviour, send it an agent, the service type and the service as a
+ * String.
+ * 
  * @author Rogelio Ramirez
  */
 public class RegisterServiceBehaviour extends OneShotBehaviour {
 
 	private String type;
 	private String name;
-	
-	public RegisterServiceBehaviour(Agent agent, String name, String type)  {
+
+	public RegisterServiceBehaviour(Agent agent, String name, String type) {
 		this.myAgent = agent;
 		this.name = name;
 		this.type = type;
 	}
-	
+
 	/** Register the classroom-search service in the yellow pages */
 	@Override
 	public void action() {

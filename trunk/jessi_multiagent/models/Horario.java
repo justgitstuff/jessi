@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashSet;
 
 /**
  * Read-only model for the Horario class. (Hora range) Future Change: Change
@@ -22,7 +23,7 @@ public class Horario extends Model {
 	private int horaFin;
 	private boolean busy;
 
-	protected Horario(int id, int diaId, int horaInicio, int horaFin) {
+	public Horario(int id, int diaId, int horaInicio, int horaFin) {
 		assert horaInicio < horaFin;
 		this.id = id;
 		this.diaId = diaId;
@@ -47,10 +48,6 @@ public class Horario extends Model {
 		return id;
 	}
 
-	public int getdiaId() {
-		return diaId;
-	}
-
 	public int getHoraInicio() {
 		return horaInicio;
 	}
@@ -73,6 +70,11 @@ public class Horario extends Model {
 	@Override
 	public boolean equals(Object obj) {
 		return this.id == ((Horario) obj).id;
+	}
+
+	@Override
+	public int hashCode() {
+		return new Integer(id).hashCode();
 	}
 
 	// Construye un objeto hora, dado el id y una conexion a la base de datos
