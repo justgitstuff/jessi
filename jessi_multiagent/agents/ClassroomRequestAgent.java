@@ -192,6 +192,9 @@ public class ClassroomRequestAgent extends Agent {
 					block();
 				}
 				break;
+			case FINISHED:
+				log(myAgent,"Classroom request agent done");
+				break;
 			}
 		}
 
