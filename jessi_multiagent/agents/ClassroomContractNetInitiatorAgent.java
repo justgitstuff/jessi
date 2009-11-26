@@ -71,7 +71,7 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 		// Add the behavior that creates the message that will be used
 		// by the ContractNetInitiator
 		addBehaviour(new CallForProposalsBehaviour());
-		addBehaviour(new FinishingdBehaviour());
+		addBehaviour(new FinishingdBehaviour(classroomOfferAgents));
 	}
 
 	/**
@@ -250,8 +250,6 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 			MessageTemplate mt = MessageTemplate
 					.MatchPerformative(ACLMessage.REQUEST);
 			ACLMessage msg = myAgent.receive(mt);
-			MessageTemplate mtTerminated = MessageTemplate.MatchPerformative(ACLMessage.PROPAGATE);
-			ACLMessage finished = myAgent.receive(mtTerminated);
 			if (msg != null) {
 				String content = msg.getContent();
 				Pattern p = Pattern.compile("\\((\\d+),(\\d+)\\)");
@@ -269,14 +267,6 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 					logError(myAgent, error);
 					assert false : error;
 				}
-			} else if(finished != null) {
-				ACLMessage m = new ACLMessage(ACLMessage.PROPAGATE);
-				// Add all the agents that will receive the proposal request
-				for (AID agent : classroomOfferAgents) {
-					m.addReceiver(agent);
-				}
-				log(myAgent, "Sending finished signal");
-				myAgent.send(m);
 			} else {
 				block();
 			}
