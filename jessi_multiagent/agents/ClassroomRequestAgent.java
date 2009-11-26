@@ -200,7 +200,13 @@ public class ClassroomRequestAgent extends Agent {
 
 		@Override
 		public boolean done() {
-			return groups.isEmpty() || state == FINISHED;
+			boolean done=groups.isEmpty() || state == FINISHED;
+			if(done)
+			{
+				log(myAgent,"Classroom request agent done");
+				myAgent.doDelete();
+			}
+			return done;
 		}
 	}
 
