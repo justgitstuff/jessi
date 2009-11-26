@@ -237,6 +237,7 @@ public class ClassroomRequestAgent extends Agent {
 			logError(this, "SQL Error when filling groups");
 			e.printStackTrace();
 		}
+		factory.closeConnection(conexion);
 	}
 
 	private void obtainGroups() {
@@ -257,6 +258,7 @@ public class ClassroomRequestAgent extends Agent {
 			logError(this, "SQL Error when filling groups");
 			e.printStackTrace();
 		}
+		factory.closeConnection(conexion);
 	}
 
 	private Pair<String, String> assignNewProfessor(String group) {
@@ -279,7 +281,7 @@ public class ClassroomRequestAgent extends Agent {
 			log(this, "SQL Error when filling groups.");
 			e.printStackTrace();
 		}
-
+		factory.closeConnection(conexion);
 		return new Pair<String, String>(group, professors.poll());
 	}
 }
