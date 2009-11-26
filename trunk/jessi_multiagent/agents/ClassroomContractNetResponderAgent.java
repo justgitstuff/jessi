@@ -80,6 +80,7 @@ public class ClassroomContractNetResponderAgent extends Agent {
 	@Override
 	protected void takeDown() {
 		try {
+			log(this, "Asignaciones" + asignaciones.toString());
 			Asignacion.insertAsignaciones(asignaciones, true);
 		} catch (SQLException e) {
 			logError("Could not generate asignaciones table");
