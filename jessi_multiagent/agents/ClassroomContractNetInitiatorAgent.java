@@ -174,7 +174,7 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 		protected void handleAllResponses(Vector responses, Vector acceptances) {
 			if (responses.size() < nResponders) {
 				// Some responder didn't reply within the specified timeout
-				System.out.println("Timeout expired: missing "
+				log("Timeout expired: missing "
 						+ (nResponders - responses.size()) + " responses");
 			}
 			// Evaluate proposals.
@@ -213,6 +213,9 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 			// failed
 			// tell queue processor agent so.
 			else {
+				log(myAgent, "No proposal available, refusing...");
+				classroomRequests.pop();
+				cfp_in_process = false;
 				queueProcessorReply.setPerformative(ACLMessage.REFUSE);
 				queueProcessorReply.setContent("not-available");
 			}
@@ -245,6 +248,8 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 			MessageTemplate mt = MessageTemplate
 					.MatchPerformative(ACLMessage.REQUEST);
 			ACLMessage msg = myAgent.receive(mt);
+			MessageTemplate mtTerminated = MessageTemplate.MatchPerformative(ACLMessage.PROPAGATE);
+			ACLMessage finished = myAgent.receive(mtTerminated);
 			if (msg != null) {
 				String content = msg.getContent();
 				Pattern p = Pattern.compile("\\((\\d+),(\\d+)\\)");
@@ -252,12 +257,18 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 				if (m.find()) {
 					queueProcessorReply = msg.createReply();
 					classroomRequests.add(content);
+					
+					// TODO: Delete this, ugly way to finish, should propagate
+					//int groupId = Integer.parseInt(m.group(1));
+					//int profId = Integer.parseInt(m.group(2));
 				} else {
 					String error = "Received bad message from "
 							+ msg.getSender() + " with content: " + content;
 					logError(myAgent, error);
 					assert false : error;
 				}
+			} else if(finished != null) {
+				// Do nothing
 			} else {
 				block();
 			}
