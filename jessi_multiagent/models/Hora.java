@@ -42,7 +42,7 @@ public class Hora extends Model {
 	}
 	
 	// Construye un objeto hora, dado el id y una conexion a la base de datos
-	public static Hora createHora(int id) throws SQLException {
+	public static Hora createHoraFromId(int id) throws SQLException {
 		String query = "select * from hora where Hora_Id = " + id + ";";
 		Hora hora = null;
 		try {
