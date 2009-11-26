@@ -32,12 +32,12 @@ include 'db_open.php';
 			$count=mysql_num_rows($result);
 			if($count>=1){
 			echo "<table width='100%' border='1'>";
-			echo "<tr><td><b>ID</b></td><td><b>NOMBRE</b></td><td><b>TIPO</b></td><td></td><td></td></tr>";			
+			echo "<tr><td><b>ID</b></td><td><b>NOMBRE</b></td><td><b>TIPO</b></td><td></td><td></td><td></td></tr>";			
 			while ($row = @mysql_fetch_array($result, MYSQL_ASSOC)) {
 				echo "<tr><td>".@$row['Profesor_Id']."</td><td>".@$row['Profesor_Nombre']."</td><td>".@$row['Profesor_Tipo']."</td>".
-				"<td width='150'>";
+				"<td width='150' style='font-size:11px'>";
 				echo"<a href='profesores_materias.php?type=mod&id=".@$row['Profesor_Id']."'>VER MATERIAS QUE PUEDE DAR</a>";
-				echo "</td><td width='150'><a href='profesores_horarios.php?type=mod&id=".@$row['Profesor_Id']."'>VER HORARIOS DISPONIBLES</a></td></tr>";
+				echo "</td><td width='150' style='font-size:11px'><a href='profesores_horarios.php?type=mod&id=".@$row['Profesor_Id']."'>VER HORARIOS DISPONIBLES</a></td><td width='150' style='font-size:11px'><a href='profesores_grupos.php?type=mod&id=".@$row['Profesor_Id']."'>VER GRUPOS A LOS QUE DA CLASE</a></td></tr>";
 			}
 			echo "</table><br />";
 			} else {

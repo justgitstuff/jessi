@@ -27,10 +27,18 @@ include 'db_open.php';
     <tr height="50"><td></td></tr>
     <tr><td>
 		<table width="100%" border="1" cellpadding="5" cellspacing="5">
+    	<tr><td><b><a href="carreras.php">LISTA DE CARRERAS Y MATERIAS</a></b></td></tr>
+    	<tr><td><b><a href="alumnos.php">LISTA DE ALUMNOS</a></b></td></tr>
+        </table><br />
+		<table width="100%" border="1" cellpadding="5" cellspacing="5">
     	<tr><td><b><a href="profesores.php">HORARIOS DE PROFESORES</a></b></td></tr>
         </table><br />
 		<table width="100%" border="1" cellpadding="5" cellspacing="5">
     	<tr><td><b><a href="materias.php">HORARIOS DE MATERIAS</a></b></td></tr>
+        </table><br />
+		<table width="100%" border="1" cellpadding="5" cellspacing="5">
+    	<tr><td><b><a href="salones.php">HORARIOS DE SALONES</a></b></td></tr>
+    	<tr><td><b><a href="laboratorios.php">HORARIOS DE LABORATORIOS</a></b></td></tr>
         </table><br />
     </td></tr>
     <tr height="30"><td></td></tr>
