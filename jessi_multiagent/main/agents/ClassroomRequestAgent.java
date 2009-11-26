@@ -15,7 +15,6 @@ import misc.Pair;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import main.agents.ConnectionFactory;
 import static misc.DebugFunctions.*;
@@ -106,9 +105,7 @@ public class ClassroomRequestAgent extends Agent {
 				// Set the content for the message, a tuple with the
 				// group id and the professor id
 				if (refusePair == null) {
-					msg
-							.setContent(assignNewProfessor(groups.poll())
-									.toString());
+					msg.setContent(assignNewProfessor(groups.poll()).toString());
 				} else {
 					msg.setContent(refusePair.toString());
 					refusePair = null;
@@ -226,7 +223,7 @@ public class ClassroomRequestAgent extends Agent {
 						conexion.prepareStatement("INSERT into grupo(Materia_Id, Grupo_Capacidad ) values (\""+materia+"\",\""+Math.ceil(GroupsCapacity/nuGroups)+"\");").executeUpdate();
 					}
 			}
-			conexion.commit();
+			//conexion.commit();
 		} catch (SQLException e) {
 			logError(this, "SQL Error when filling groups");
 			e.printStackTrace();
@@ -265,14 +262,10 @@ public class ClassroomRequestAgent extends Agent {
 		try {
 			// Obtains ResultSet tables from the execution of the query
 			result = conexion.prepareStatement(sql).executeQuery();
-			// Obtains the MetaData of the previous ResultSet
-			ResultSetMetaData resultMeta = result.getMetaData();
 			// Iterates over the table of results
 			while (result.next()) {
-				for (int i = 0; i < resultMeta.getColumnCount(); i++) {
 					// Stores the resultant professors in a queue
-					professors.offer(result.getString(i));
-				}
+					professors.offer(result.getString(1));
 			}
 		} catch (SQLException e) {
 			log(this, "SQL Error when filling groups.");
