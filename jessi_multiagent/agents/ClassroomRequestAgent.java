@@ -193,17 +193,16 @@ public class ClassroomRequestAgent extends Agent {
 				}
 				break;
 			case FINISHED:
-				log(myAgent,"Classroom request agent done");
+				log(myAgent,"Classroom request agent done.");
 				break;
 			}
 		}
 
 		@Override
 		public boolean done() {
-			boolean done=groups.isEmpty() || state == FINISHED;
-			if(done)
-			{
-				log(myAgent,"Classroom request agent done");
+			boolean done = groups.isEmpty() || state == FINISHED;
+			if(done) {
+				log(myAgent, "finished");
 				myAgent.doDelete();
 			}
 			return done;
@@ -244,6 +243,18 @@ public class ClassroomRequestAgent extends Agent {
 			e.printStackTrace();
 		}
 		factory.closeConnection(conexion);
+	}
+	
+	@Override
+	protected void takeDown() {
+		ACLMessage m = new ACLMessage(ACLMessage.PROPAGATE);
+		// Add all the agents that will receive the proposal request
+		for (AID agent : CNAgents) {
+			m.addReceiver(agent);
+		}
+		log(this, "Sending finished signal");
+		send(m);
+		super.takeDown();
 	}
 
 	private void obtainGroups() {

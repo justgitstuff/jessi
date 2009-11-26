@@ -21,6 +21,7 @@ import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPAAgentManagement.FailureException;
 
+import agents.behaviours.FinishingdBehaviour;
 import agents.behaviours.RegisterServiceBehaviour;
 import agents.database.ConnectionFactory;
 import static misc.DebugFunctions.*;
@@ -72,6 +73,19 @@ public class ClassroomContractNetResponderAgent extends Agent {
 						MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
 						MessageTemplate.MatchPerformative(ACLMessage.CFP));
 		addBehaviour(new ClassroomContractNetResponderBehaviour(this, template));
+		addBehaviour(new FinishingdBehaviour());
+	}
+	
+	
+	@Override
+	protected void takeDown() {
+		try {
+			Asignacion.insertAsignaciones(asignaciones, true);
+		} catch (SQLException e) {
+			logError("Could not generate asignaciones table");
+			e.printStackTrace();
+		}
+		super.takeDown();
 	}
 
 	private Profesor findProfessor(int profesorId) {
@@ -176,8 +190,7 @@ public class ClassroomContractNetResponderAgent extends Agent {
 				log(myAgent, "No proposals for " + content + ", refusing...");
 				ACLMessage refuse = cfp.createReply();
 				refuse.setPerformative(ACLMessage.REFUSE);
-				return refuse;	
-				//throw new RefuseException("evaluation-failed");
+				return refuse;
 			}
 		}
 
@@ -193,7 +206,6 @@ public class ClassroomContractNetResponderAgent extends Agent {
 				log(myAgent, "Classroom successfully assigned");
 				ACLMessage inform = accept.createReply();
 				inform.setPerformative(ACLMessage.INFORM);
-				
 				
 				//TODO: Delete this
 				if(terminate) {

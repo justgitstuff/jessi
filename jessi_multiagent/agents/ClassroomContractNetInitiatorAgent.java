@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import agents.behaviours.FinishingdBehaviour;
 import agents.behaviours.RegisterServiceBehaviour;
 import agents.behaviours.SearchServiceBehaviour;
 
@@ -70,6 +71,7 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 		// Add the behavior that creates the message that will be used
 		// by the ContractNetInitiator
 		addBehaviour(new CallForProposalsBehaviour());
+		addBehaviour(new FinishingdBehaviour());
 	}
 
 	/**
@@ -268,7 +270,13 @@ public class ClassroomContractNetInitiatorAgent extends Agent {
 					assert false : error;
 				}
 			} else if(finished != null) {
-				// Do nothing
+				ACLMessage m = new ACLMessage(ACLMessage.PROPAGATE);
+				// Add all the agents that will receive the proposal request
+				for (AID agent : classroomOfferAgents) {
+					m.addReceiver(agent);
+				}
+				log(myAgent, "Sending finished signal");
+				myAgent.send(m);
 			} else {
 				block();
 			}
