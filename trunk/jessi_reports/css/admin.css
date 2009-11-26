@@ -4,6 +4,20 @@
 body {
 	font-family:Verdana, Arial, Helvetica, sans-serif;
 	font-size:12px;
+	margin: 0 auto;
+	padding: 0;
+}
+
+tr { background-color: #FFF}
+.normal { background-color: #FFF }
+.highlight { background-color: #8888FF }
+
+table.AdminSystem{
+	border: 0px;
+}
+
+table{
+	border:1px solid #ccc;
 }
 
 .doubleSpace {
@@ -12,6 +26,7 @@ body {
 
 .LoginBar {
 	font-size:11px;
+	text-align:center;
 }
 
 .AdminSystem {
@@ -24,18 +39,22 @@ body {
 	text-align:left;
 }
 
-a:hover{
+a:link{
+	color:#006699;
 	text-decoration:none;
 }
 
 a:visited{
 	color:#006699;
+	text-decoration:none;
 }
 
 a:active{
 	color:#006699;
+	text-decoration:none;
 }
 
-a:link{
+a:hover{
 	color:#006699;
+	text-decoration:underline;
 }
