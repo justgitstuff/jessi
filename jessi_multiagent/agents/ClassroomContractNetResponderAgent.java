@@ -1,4 +1,4 @@
-package main.agents;
+package agents;
 
 import models.*;
 
@@ -20,6 +20,9 @@ import jade.domain.FIPANames;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPAAgentManagement.FailureException;
+
+import agents.behaviours.RegisterServiceBehaviour;
+import agents.database.ConnectionFactory;
 import static misc.DebugFunctions.*;
 
 /**

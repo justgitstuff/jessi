@@ -1,4 +1,4 @@
-package main.agents;
+package agents.behaviours;
 
 import static misc.DebugFunctions.log;
 

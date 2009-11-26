@@ -3,7 +3,7 @@ package models;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import main.agents.ConnectionFactory;
+import agents.database.ConnectionFactory;
 
 public class Model {
 

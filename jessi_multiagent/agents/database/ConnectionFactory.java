@@ -1,4 +1,4 @@
-package main.agents;
+package agents.database;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

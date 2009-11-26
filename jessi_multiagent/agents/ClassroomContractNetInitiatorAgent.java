@@ -1,4 +1,4 @@
-package main.agents;
+package agents;
 
 import jade.core.Agent;
 import jade.core.AID;
@@ -14,6 +14,9 @@ import java.util.Enumeration;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import agents.behaviours.RegisterServiceBehaviour;
+import agents.behaviours.SearchServiceBehaviour;
 
 import static misc.DebugFunctions.*;
 

@@ -1,4 +1,4 @@
-package main.agents;
+package agents.database;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
