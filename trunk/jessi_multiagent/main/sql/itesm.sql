@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-11-25 22:48:09
+Date: 2009-11-25 22:54:36
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -34,7 +34,7 @@ INSERT INTO `admin` VALUES ('admin', 'access');
 -- ----------------------------
 DROP TABLE IF EXISTS `alumno`;
 CREATE TABLE `alumno` (
-  `Alumno_Id` int(11) NOT NULL DEFAULT '0',
+  `Alumno_Id` varchar(11) NOT NULL,
   `Alumno_Nombre` varchar(25) DEFAULT NULL,
   `Alumno_Carrera` varchar(3) DEFAULT NULL,
   `Alumno_Semestre` int(11) DEFAULT NULL,
