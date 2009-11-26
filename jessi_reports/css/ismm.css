@@ -1,0 +1,144 @@
+@charset "utf-8";
+/* CSS Document */
+
+body, html{
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	height: 100%;
+}
+
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+
+#content {
+}
+
+#back {
+}
+
+#twitter_button {
+	background:url(../images/twitter.png); 
+	position:absolute; 
+	left:131px;	top:1021px; width:124px; height:57px
+}
+
+#facebook_button {
+	background:url(../images/facebook.png);
+	position:absolute;
+	left:280px;	top:1022px;	width:119px;	height:57px
+}
+
+#register_button {
+	background:url(../images/registrate.png);
+	position:absolute;
+	left:430px;	top:1013px;	width:154px; height:61px
+}
+
+#conocenos {
+	background:url(../images/boton_conoce.png);
+	position:absolute;
+	left:765px; top:952px; width:234px; height:54px
+}
+
+#telefonos {
+	background:url(../images/telefonos.png);
+	position:absolute;
+	left:801px; top:1017px; width:168px; height:47px
+}
+
+#correo {
+	background:url(../images/mail.png);
+	position:absolute;
+	left:769px; top:1066px; width:224px; height:19px
+}
+
+#other_square {
+	overflow:auto;
+	margin-left:15px;
+	margin-top:8px;
+	height:90px;
+	width:180px;
+	font-size:12px;
+	color:#FFFFFF;
+}
+
+#userlog {
+	background:url(../images/loginsquare.png);
+	position:absolute;
+	left:755px;
+	top:117px;
+	width:245px;
+	height:47px;
+	text-align:center;
+}
+
+#question {
+	background:url(../images/pregunta.png);
+	width:348px;
+	height:68px;
+	position:absolute;
+	left: 341px;
+	top: 90px;
+	color:#031870;
+	font-size:12px;
+}
+
+a {
+	text-decoration:none;
+	color:#FFFFFF;
+}
+
+a:hover {
+	text-decoration:underline;
+	color:#FFFFFF;
+}
+
+#question a {
+	text-decoration:none;
+	color:#031870;
+}
+
+#question a:hover {
+	text-decoration:underline;
+	color:#031870;
+}
+
+.titles {
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:13px;
+	color:#031870;
+}
+
+.titles_concurso {
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-size:18px;
+	color:#FFFFFF;
+}
+
+.titles a {
+	text-decoration:none;
+	color:#031870;
+}
+
+.titles a:hover {
+	text-decoration:underline;
+	color:#031870;
+}
+
+.text_normal {
+	font-size:10px;
+	color:#FFFFFF;
+}
+
+.text_bigger {
+	font-size:15px;
+	color:#FFFFFF;
+}
+
+.text_other {
+	font-size:12px;
+	color:#FFFFFF;
+}
