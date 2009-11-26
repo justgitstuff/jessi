@@ -81,6 +81,16 @@ public class ConnectionFactory {
 		}
 		return null;
 	}
+	
+	public void closeConnection(Connection conexion)
+	{
+		try {
+			conexion.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	private void loadProperties() {
 		try {
