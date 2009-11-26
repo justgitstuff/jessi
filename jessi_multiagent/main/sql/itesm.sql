@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : MySQL
-Source Server Version : 50045
+Source Server         : intercity
+Source Server Version : 50136
 Source Host           : localhost:3306
 Source Database       : itesm
 
 Target Server Type    : MYSQL
-Target Server Version : 50045
+Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-11-24 19:34:36
+Date: 2009-11-25 22:32:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -19,9 +19,9 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE `admin` (
-  `admin_user` varchar(10) NOT NULL default '',
-  `admin_pass` varchar(10) NOT NULL default '',
-  PRIMARY KEY  (`admin_user`)
+  `admin_user` varchar(10) NOT NULL DEFAULT '',
+  `admin_pass` varchar(10) NOT NULL DEFAULT '',
+  PRIMARY KEY (`admin_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -34,11 +34,11 @@ INSERT INTO `admin` VALUES ('admin', 'access');
 -- ----------------------------
 DROP TABLE IF EXISTS `alumno`;
 CREATE TABLE `alumno` (
-  `Alumno_Id` int(11) NOT NULL default '0',
-  `Alumno_Nombre` varchar(25) default NULL,
-  `Alumno_Carrera` varchar(3) default NULL,
-  `Alumno_Semestre` int(11) default NULL,
-  PRIMARY KEY  (`Alumno_Id`)
+  `Alumno_Id` int(11) NOT NULL DEFAULT '0',
+  `Alumno_Nombre` varchar(25) DEFAULT NULL,
+  `Alumno_Carrera` varchar(3) DEFAULT NULL,
+  `Alumno_Semestre` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Alumno_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -50,8 +50,8 @@ CREATE TABLE `alumno` (
 -- ----------------------------
 DROP TABLE IF EXISTS `alumno_grupo`;
 CREATE TABLE `alumno_grupo` (
-  `Grupo_Id` int(11) default NULL,
-  `Alumno_Id` int(11) default NULL,
+  `Grupo_Id` int(11) DEFAULT NULL,
+  `Alumno_Id` int(11) DEFAULT NULL,
   KEY `Grupo_Id` (`Grupo_Id`),
   KEY `Alumno_Id` (`Alumno_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -65,11 +65,11 @@ CREATE TABLE `alumno_grupo` (
 -- ----------------------------
 DROP TABLE IF EXISTS `asignacion`;
 CREATE TABLE `asignacion` (
-  `Grupo_Id` int(11) NOT NULL default '0',
-  `Profesor_Id` int(11) NOT NULL default '0',
-  `Lugar_Id` int(11) NOT NULL default '0',
-  `Horario_Disp_Id` int(11) default NULL,
-  PRIMARY KEY  (`Grupo_Id`,`Profesor_Id`,`Lugar_Id`),
+  `Grupo_Id` int(11) NOT NULL DEFAULT '0',
+  `Profesor_Id` int(11) NOT NULL DEFAULT '0',
+  `Lugar_Id` int(11) NOT NULL DEFAULT '0',
+  `Horario_Disp_Id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Grupo_Id`,`Profesor_Id`,`Lugar_Id`),
   KEY `Profesor_Id` (`Profesor_Id`),
   KEY `Lugar_Id` (`Lugar_Id`),
   KEY `Horario_Disp_Id` (`Horario_Disp_Id`)
@@ -84,9 +84,9 @@ CREATE TABLE `asignacion` (
 -- ----------------------------
 DROP TABLE IF EXISTS `carrera`;
 CREATE TABLE `carrera` (
-  `Carrera_Id` varchar(5) NOT NULL default '',
-  `Carrera_Nombre` varchar(300) default NULL,
-  PRIMARY KEY  (`Carrera_Id`)
+  `Carrera_Id` varchar(5) NOT NULL DEFAULT '',
+  `Carrera_Nombre` varchar(300) DEFAULT NULL,
+  PRIMARY KEY (`Carrera_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -103,8 +103,9 @@ INSERT INTO `carrera` VALUES ('LSCA', 'Licenciado en Sistemas Computacionales y 
 -- ----------------------------
 DROP TABLE IF EXISTS `carrera_materia`;
 CREATE TABLE `carrera_materia` (
-  `Carrera_Id` varchar(5) default NULL,
-  `Materia_Id` varchar(20) default NULL,
+  `Carrera_Id` varchar(5) DEFAULT NULL,
+  `Materia_Id` varchar(20) DEFAULT NULL,
+  `Semestre` int(11) DEFAULT NULL,
   KEY `Carrera_Id` (`Carrera_Id`),
   KEY `Materia_Id` (`Materia_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -112,239 +113,239 @@ CREATE TABLE `carrera_materia` (
 -- ----------------------------
 -- Records of carrera_materia
 -- ----------------------------
-INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00821');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00831');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00841');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00858');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00881');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00883');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00899');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'CS00883');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'IS00882');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'MR1001');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00003-CLIN');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00004-CLIN');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00865');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00866');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00868');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00877');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00886');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1001');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1002');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1004');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1005');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1006');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1007');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1009');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1010');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1011');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1012');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2001');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2002');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2003');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2004');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2005');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2006');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2008');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2009');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2010');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2011');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2012');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2013');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2014');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3003');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3021');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3037');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3041');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3043');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3044');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1000');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1001');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1002');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1004');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1005');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1007');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2000');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2001');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2002');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2003');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2004');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2006');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2007');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2009');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3001');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3002');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3010');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3014');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3023');
-INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3024');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00821');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00831');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00841');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00858');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00881');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00883');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00899');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'CS00883');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'IS00882');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'MR1001');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00003-CLIN');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00004-CLIN');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00865');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00866');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00868');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00877');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00886');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TC1001');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3003');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3021');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3037');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3041');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3043');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3044');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1000');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1001');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1002');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1004');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1005');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1007');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2000');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2001');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2002');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2003');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2004');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2006');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2007');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2009');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3001');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3002');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3010');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3014');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3023');
-INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3024');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00821');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00831');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00841');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00858');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00881');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00883');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00899');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'CS00883');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'IS00882');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'MR1001');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00003-CLIN');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00004-CLIN');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00865');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00866');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00868');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00877');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00886');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1001');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1002');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1004');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1005');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1006');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1007');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1009');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1010');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1011');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1012');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2001');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2002');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2003');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2004');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2005');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2006');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2008');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2009');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2010');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2011');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2012');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2013');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2014');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC3003');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC3021');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2001');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2002');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2003');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2004');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2006');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2007');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2009');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3001');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3002');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3010');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3014');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3023');
-INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3024');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00821');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00831');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00841');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00858');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00881');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00883');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00899');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'CS00883');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'IS00882');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'MR1001');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00003-CLIN');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00004-CLIN');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00865');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00866');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00868');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00877');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00886');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1001');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1002');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1004');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1005');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1006');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1007');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1009');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1010');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1011');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1012');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2001');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2002');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2003');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2004');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2005');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2006');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2008');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2009');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2010');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2011');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2012');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2013');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2014');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3003');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3021');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3037');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3041');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3043');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3044');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1000');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1001');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1002');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1004');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1005');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1007');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2000');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2001');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2002');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2003');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2004');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2006');
-INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2007');
+INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00821', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00831', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00841', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00858', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00881', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00883', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'CB00899', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'CS00883', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'IS00882', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'MR1001', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00003-CLIN', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00004-CLIN', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00865', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00866', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00868', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00877', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'SI00886', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1001', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1002', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1004', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1005', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1006', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1007', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1009', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1010', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1011', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC1012', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2001', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2002', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2003', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2004', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2005', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2006', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2008', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2009', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2010', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2011', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2012', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2013', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC2014', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3003', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3021', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3037', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3041', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3043', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TC3044', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1000', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1001', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1002', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1004', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1005', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI1007', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2000', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2001', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2002', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2003', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2004', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2006', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2007', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI2009', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3001', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3002', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3010', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3014', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3023', null);
+INSERT INTO `carrera_materia` VALUES ('ITC', 'TI3024', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00821', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00831', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00841', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00858', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00881', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00883', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'CB00899', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'CS00883', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'IS00882', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'MR1001', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00003-CLIN', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00004-CLIN', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00865', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00866', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00868', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00877', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'SI00886', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TC1001', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3003', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3021', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3037', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3041', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3043', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TC3044', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1000', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1001', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1002', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1004', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1005', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI1007', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2000', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2001', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2002', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2003', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2004', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2006', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2007', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI2009', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3001', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3002', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3010', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3014', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3023', null);
+INSERT INTO `carrera_materia` VALUES ('LATI', 'TI3024', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00821', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00831', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00841', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00858', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00881', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00883', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'CB00899', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'CS00883', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'IS00882', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'MR1001', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00003-CLIN', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00004-CLIN', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00865', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00866', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00868', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00877', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'SI00886', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1001', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1002', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1004', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1005', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1006', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1007', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1009', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1010', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1011', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC1012', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2001', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2002', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2003', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2004', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2005', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2006', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2008', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2009', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2010', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2011', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2012', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2013', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC2014', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC3003', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TC3021', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2001', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2002', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2003', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2004', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2006', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2007', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI2009', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3001', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3002', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3010', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3014', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3023', null);
+INSERT INTO `carrera_materia` VALUES ('ITIC', 'TI3024', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00821', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00831', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00841', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00858', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00881', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00883', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'CB00899', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'CS00883', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'IS00882', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'MR1001', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00003-CLIN', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00004-CLIN', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00865', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00866', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00868', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00877', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'SI00886', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1001', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1002', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1004', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1005', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1006', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1007', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1009', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1010', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1011', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC1012', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2001', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2002', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2003', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2004', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2005', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2006', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2008', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2009', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2010', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2011', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2012', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2013', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC2014', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3003', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3021', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3037', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3041', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3043', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TC3044', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1000', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1001', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1002', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1004', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1005', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI1007', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2000', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2001', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2002', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2003', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2004', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2006', null);
+INSERT INTO `carrera_materia` VALUES ('ISC', 'TI2007', null);
 
 -- ----------------------------
 -- Table structure for `dia`
 -- ----------------------------
 DROP TABLE IF EXISTS `dia`;
 CREATE TABLE `dia` (
-  `Dia_Id` int(11) NOT NULL auto_increment,
-  `Dia_Nombre` varchar(10) default NULL,
-  PRIMARY KEY  (`Dia_Id`)
+  `Dia_Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Dia_Nombre` varchar(10) DEFAULT NULL,
+  PRIMARY KEY (`Dia_Id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -365,9 +366,9 @@ INSERT INTO `dia` VALUES ('9', 'LMWJV');
 -- ----------------------------
 DROP TABLE IF EXISTS `grupo`;
 CREATE TABLE `grupo` (
-  `Grupo_Id` int(11) NOT NULL default '0',
-  `Materia_Id` varchar(8) default NULL,
-  PRIMARY KEY  (`Grupo_Id`),
+  `Grupo_Id` int(11) NOT NULL DEFAULT '0',
+  `Materia_Id` varchar(8) DEFAULT NULL,
+  PRIMARY KEY (`Grupo_Id`),
   KEY `Materia_Id` (`Materia_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -380,9 +381,9 @@ CREATE TABLE `grupo` (
 -- ----------------------------
 DROP TABLE IF EXISTS `hora`;
 CREATE TABLE `hora` (
-  `Hora_Id` int(11) NOT NULL default '0',
-  `Hora_Nombre` int(11) default NULL,
-  PRIMARY KEY  (`Hora_Id`)
+  `Hora_Id` int(11) NOT NULL DEFAULT '0',
+  `Hora_Nombre` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Hora_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -425,11 +426,11 @@ INSERT INTO `hora` VALUES ('31', '2200');
 -- ----------------------------
 DROP TABLE IF EXISTS `horarios_disp`;
 CREATE TABLE `horarios_disp` (
-  `Horario_Disp_Id` int(11) NOT NULL default '0',
-  `Dia_Id` varchar(2) default NULL,
-  `Hora_Inicio` int(11) default NULL,
-  `Hora_Fin` int(11) default NULL,
-  PRIMARY KEY  (`Horario_Disp_Id`),
+  `Horario_Disp_Id` int(11) NOT NULL DEFAULT '0',
+  `Dia_Id` varchar(2) DEFAULT NULL,
+  `Hora_Inicio` int(11) DEFAULT NULL,
+  `Hora_Fin` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Horario_Disp_Id`),
   KEY `Dia_Id` (`Dia_Id`),
   KEY `Hora_Inicio` (`Hora_Inicio`),
   KEY `Hora_Fin` (`Hora_Fin`)
@@ -465,11 +466,11 @@ INSERT INTO `horarios_disp` VALUES ('21', '8', '19', '22');
 -- ----------------------------
 DROP TABLE IF EXISTS `lugar`;
 CREATE TABLE `lugar` (
-  `Lugar_Id` int(11) NOT NULL auto_increment,
-  `Capacidad` int(11) default NULL,
-  `Tipo` varchar(2) default NULL,
-  `Codigo` varchar(11) default NULL,
-  PRIMARY KEY  (`Lugar_Id`)
+  `Lugar_Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Capacidad` int(11) DEFAULT NULL,
+  `Tipo` varchar(2) DEFAULT NULL,
+  `Codigo` varchar(11) DEFAULT NULL,
+  PRIMARY KEY (`Lugar_Id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=135 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -615,12 +616,12 @@ INSERT INTO `lugar` VALUES ('134', '12', 'L', 'S-LABCL101');
 -- ----------------------------
 DROP TABLE IF EXISTS `materia`;
 CREATE TABLE `materia` (
-  `Materia_Id` varchar(20) NOT NULL default '',
-  `Materia_Nombre` varchar(100) default NULL,
-  `Materia_Division` varchar(5) default NULL,
-  `Materia_Horas` int(11) default NULL,
-  `Materia_Poblacion` int(11) default NULL,
-  PRIMARY KEY  (`Materia_Id`)
+  `Materia_Id` varchar(20) NOT NULL DEFAULT '',
+  `Materia_Nombre` varchar(100) DEFAULT NULL,
+  `Materia_Division` varchar(5) DEFAULT NULL,
+  `Materia_Horas` int(11) DEFAULT NULL,
+  `Materia_Poblacion` int(11) DEFAULT NULL,
+  PRIMARY KEY (`Materia_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -698,10 +699,10 @@ INSERT INTO `materia` VALUES ('TI3024', 'Admón servic tecno información', 'SI'
 -- ----------------------------
 DROP TABLE IF EXISTS `profesor`;
 CREATE TABLE `profesor` (
-  `Profesor_Id` int(11) NOT NULL auto_increment,
-  `Profesor_Nombre` varchar(50) default NULL,
-  `Profesor_Tipo` varchar(20) default NULL,
-  PRIMARY KEY  (`Profesor_Id`)
+  `Profesor_Id` int(11) NOT NULL AUTO_INCREMENT,
+  `Profesor_Nombre` varchar(50) DEFAULT NULL,
+  `Profesor_Tipo` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`Profesor_Id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -733,8 +734,8 @@ INSERT INTO `profesor` VALUES ('20', 'Claudia Bellido', 'Cátedra');
 -- ----------------------------
 DROP TABLE IF EXISTS `profesor_horario`;
 CREATE TABLE `profesor_horario` (
-  `Horario_Disp_Id` int(11) default NULL,
-  `Profesor_Id` int(11) default NULL,
+  `Horario_Disp_Id` int(11) DEFAULT NULL,
+  `Profesor_Id` int(11) DEFAULT NULL,
   KEY `Horario_Disp_Id` (`Horario_Disp_Id`),
   KEY `Profesor_Id` (`Profesor_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -845,10 +846,10 @@ INSERT INTO `profesor_horario` VALUES ('9', '20');
 -- ----------------------------
 DROP TABLE IF EXISTS `profesor_materia`;
 CREATE TABLE `profesor_materia` (
-  `Materia_Id` varchar(20) NOT NULL default '',
-  `Profesor_Id` int(11) NOT NULL default '0',
-  `Prioridad` varchar(5) default NULL,
-  PRIMARY KEY  (`Materia_Id`,`Profesor_Id`),
+  `Materia_Id` varchar(20) NOT NULL DEFAULT '',
+  `Profesor_Id` int(11) NOT NULL DEFAULT '0',
+  `Prioridad` varchar(5) DEFAULT NULL,
+  PRIMARY KEY (`Materia_Id`,`Profesor_Id`),
   KEY `Profesor_Id` (`Profesor_Id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
