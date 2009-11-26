@@ -212,7 +212,7 @@ public class ClassroomRequestAgent extends Agent {
 			// Obtains ResultSet tables from the execution of the query
 			result = conexion.prepareStatement(sql).executeQuery();
 			// Number of groups
-			int nuGroups=0;
+			double nuGroups=0;
 			// Iterates over the table of results
 			while (result.next()) 
 			{
@@ -221,7 +221,7 @@ public class ClassroomRequestAgent extends Agent {
 					// Divides the population and the capacity and results in the number of groups
 					nuGroups=Math.ceil(Integer.parseInt(result.getString(1))/GroupsCapacity);
 					// Stores the groups in the database
-					while(nuGroups!=0)
+					while(nuGroups!=0.0)
 					{
 						conexion.prepareStatement("INSERT into grupo(Materia_Id) values (\""+materia+"\");").executeQuery();
 						nuGroups--;
