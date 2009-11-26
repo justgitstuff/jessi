@@ -245,7 +245,6 @@ public class ClassroomContractNetResponderAgent extends Agent {
 				logError(myAgent, e.getMessage());
 				return PROPOSAL_ERROR;
 			}
-
 			log(myAgent, "Proposal is" + proposal.toString());
 			return proposal_value;
 		}
