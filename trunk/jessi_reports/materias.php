@@ -32,11 +32,13 @@ include 'db_open.php';
 			$count=mysql_num_rows($result);
 			if($count>=1){
 			echo "<table width='100%' border='1'>";
-			echo "<tr><td><b>ID</b></td><td><b>NOMBRE</b></td><td><b>DIVISIÓN</b></td><td><b>HORAS</b></td><td><b>NÚMERO DE ALUMNOS</b></td><td></td></tr>";			
+			echo "<tr><td><b>ID</b></td><td><b>NOMBRE</b></td><td><b>DIVISIÓN</b></td><td><b>HORAS</b></td><td><b>NÚMERO DE ALUMNOS</b></td><td></td><td></td></tr>";			
 			while ($row = @mysql_fetch_array($result, MYSQL_ASSOC)) {
 				echo "<tr><td>".@$row['Materia_Id']."</td><td>".@$row['Materia_Nombre']."</td><td>".@$row['Materia_Division']."</td><td>".@$row['Materia_Horas']."</td><td>".@$row['Materia_Poblacion']."</td>".
-				"<td width='150'>";
-				echo"<a href='materias_profesores.php?type=mod&id=".@$row['Materia_Id']."'>VER PROFESORES QUE LA PUEDEN DAR</a>";
+				"<td width='150' style='font-size:11px'>";
+				echo "<a href='materias_profesores.php?type=mod&id=".@$row['Materia_Id']."'>VER PROFESORES QUE LA PUEDEN DAR</a>";
+				echo "</td><td width='150' style='font-size:11px'>";
+				echo "<a href='materias_grupos.php?type=mod&id=".@$row['Materia_Id']."'>VER GRUPOS DE LA MATERIA (PROFESOR, LUGAR, HORARIO)</a>";
 				echo "</td></tr>";
 			}
 			echo "</table><br />";

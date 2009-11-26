@@ -19,36 +19,34 @@ include 'db_open.php';
 	if($count>=1){
 	?>
 
-	<table align="center" class="AdminSystem" width="600" border="0" cellspacing="0" cellpadding="0">
+	<table align="center" class="AdminSystem" width="700" border="0" cellspacing="0" cellpadding="0">
     <tr height="50"><td></td></tr>
     <tr><td><b><font color="#006699">SISTEMA DE CALENDARIZACIÓN</font></b></td></tr>
     <tr height="20"><td></td></tr>
-    <tr><td><b><font color="#000000">[ REPORTES - PROFESORES > MATERIAS ]</font></b></td></tr>
+    <tr><td><b><font color="#000000">[ REPORTES - CARRERAS ]</font></b></td></tr>
     <tr height="50"><td></td></tr>
     <tr><td>
             <?php
-			$query_aux  = "SELECT * FROM profesor WHERE Profesor_Id ='".@$_GET['id']."'";
-			$result_aux = mysql_query($query_aux);
-			$row_aux = @mysql_fetch_array($result_aux, MYSQL_ASSOC);
-			echo "<div style='font-size:15px; font-weight:bold'>Profesor: &nbsp;".$row_aux['Profesor_Nombre']."</div><br/><br/>";
-			$query  = "SELECT * FROM materia LEFT JOIN profesor_materia ON profesor_materia.Materia_Id = materia.Materia_Id WHERE profesor_materia.Profesor_Id = ".$_GET["id"];
+			$query  = "SELECT * FROM carrera";
 			$result = mysql_query($query);
 			$count=mysql_num_rows($result);
 			if($count>=1){
 			echo "<table width='100%' border='1'>";
-			echo "<tr><td><b>ID</b></td><td><b>MATERIA</b></td><td><b>PRIORIDAD</b></td></tr>";			
+			echo "<tr><td><b>ID</b></td><td><b>NOMBRE</b></td><td></td></tr>";			
 			while ($row = @mysql_fetch_array($result, MYSQL_ASSOC)) {
-				echo "<tr><td>".@$row['Materia_Id']."</td><td>".@$row['Materia_Nombre']."</td><td>".@$row['Prioridad']."</td></tr>";
+				echo "<tr><td>".@$row['Carrera_Id']."</td><td>".@$row['Carrera_Nombre']."</td><td width='150' style='font-size:11px'>";
+				echo"<a href='carreras_materias.php?type=mod&id=".@$row['Carrera_Id']."'>VER MATERIAS POR SEMESTRE</a>";
+				echo "</td></tr>";
 			}
 			echo "</table><br />";
 			} else {
-			echo "<br><b>No existen materias registradas para el profesor.</b>";
+			echo "<br><b>No existen carreras registradas.</b>";
 			}
 			@mysql_free_result($result); 
 			?>        
     </td></tr>
     <tr height="20"><td></td></tr>
-    <tr><td colspan="2"><a href="profesores.php">REGRESAR</a></td></tr>
+    <tr><td colspan="2"><a href="menu.php">REGRESAR</a></td></tr>
     <tr height="30"><td></td></tr>
     </table>
     

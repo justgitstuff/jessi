@@ -36,9 +36,9 @@ include 'db_open.php';
 			$count=mysql_num_rows($result);
 			if($count>=1){
 			echo "<table width='100%' border='1'>";
-			echo "<tr><td><b>ID</b></td><td><b>PROFESOR</b></td></tr>";			
+			echo "<tr><td><b>ID</b></td><td><b>PROFESOR</b></td><td><b>PRIORIDAD</b></td></tr>";			
 			while ($row = @mysql_fetch_array($result, MYSQL_ASSOC)) {
-				echo "<tr><td>".@$row['Profesor_Id']."</td><td>".@$row['Profesor_Nombre']."</td></tr>";
+				echo "<tr><td>".@$row['Profesor_Id']."</td><td>".@$row['Profesor_Nombre']."</td><td>".@$row['Prioridad']."</td></tr>";
 			}
 			echo "</table><br />";
 			} else {

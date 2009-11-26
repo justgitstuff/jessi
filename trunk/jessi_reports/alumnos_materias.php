@@ -23,32 +23,34 @@ include 'db_open.php';
     <tr height="50"><td></td></tr>
     <tr><td><b><font color="#006699">SISTEMA DE CALENDARIZACIÓN</font></b></td></tr>
     <tr height="20"><td></td></tr>
-    <tr><td><b><font color="#000000">[ REPORTES - PROFESORES > MATERIAS ]</font></b></td></tr>
+    <tr><td><b><font color="#000000">[ REPORTES - ALUMNOS > MATERIAS POSIBLES ]</font></b></td></tr>
     <tr height="50"><td></td></tr>
     <tr><td>
             <?php
-			$query_aux  = "SELECT * FROM profesor WHERE Profesor_Id ='".@$_GET['id']."'";
+			$query_aux  = "SELECT * FROM alumno WHERE Alumno_Id ='".@$_GET['id']."'";
 			$result_aux = mysql_query($query_aux);
 			$row_aux = @mysql_fetch_array($result_aux, MYSQL_ASSOC);
-			echo "<div style='font-size:15px; font-weight:bold'>Profesor: &nbsp;".$row_aux['Profesor_Nombre']."</div><br/><br/>";
-			$query  = "SELECT * FROM materia LEFT JOIN profesor_materia ON profesor_materia.Materia_Id = materia.Materia_Id WHERE profesor_materia.Profesor_Id = ".$_GET["id"];
+			echo "<div style='font-size:15px; font-weight:bold'>Alumno: &nbsp;".$row_aux['Alumno_Nombre']."</div>";
+			echo "<div style='font-size:15px; font-weight:bold'>Carrera: &nbsp;".@$_GET['carr']."</div>";
+			echo "<div style='font-size:15px; font-weight:bold'>Semestre: &nbsp;".@$_GET['sem']."</div><br/><br/>";
+			$query  = "SELECT * FROM materia LEFT JOIN carrera_materia ON carrera_materia.Materia_Id = materia.Materia_Id WHERE carrera_materia.Carrera_Id = '".$_GET["carr"]."' AND carrera_materia.Semestre = ".$_GET["sem"];
 			$result = mysql_query($query);
 			$count=mysql_num_rows($result);
 			if($count>=1){
 			echo "<table width='100%' border='1'>";
-			echo "<tr><td><b>ID</b></td><td><b>MATERIA</b></td><td><b>PRIORIDAD</b></td></tr>";			
+			echo "<tr><td><b>ID</b></td><td><b>MATERIA</b></td></tr>";			
 			while ($row = @mysql_fetch_array($result, MYSQL_ASSOC)) {
-				echo "<tr><td>".@$row['Materia_Id']."</td><td>".@$row['Materia_Nombre']."</td><td>".@$row['Prioridad']."</td></tr>";
+				echo "<tr><td>".@$row['Materia_Id']."</td><td>".@$row['Materia_Nombre']."</td></tr>";
 			}
 			echo "</table><br />";
 			} else {
-			echo "<br><b>No existen materias registradas para el profesor.</b>";
+			echo "<br><b>No existen materias registradas para el semestre de la carrera.</b>";
 			}
 			@mysql_free_result($result); 
 			?>        
     </td></tr>
     <tr height="20"><td></td></tr>
-    <tr><td colspan="2"><a href="profesores.php">REGRESAR</a></td></tr>
+    <tr><td colspan="2"><a href="alumnos.php">REGRESAR</a></td></tr>
     <tr height="30"><td></td></tr>
     </table>
     
