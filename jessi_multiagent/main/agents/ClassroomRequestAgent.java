@@ -29,7 +29,7 @@ public class ClassroomRequestAgent extends Agent {
 	private static final long SEARCH_DELTA = 15000L;
 	// String when the response assigned is "OK"
 	private static final String OK = "ok";
-	private int GroupsCapacity=25;
+	private int GroupsCapacity = 25;
 	// Creates a new Connection Factory....for connections
 	ConnectionFactory factory = new ConnectionFactory();
 	// The list of the agents that provide the contract network service
@@ -105,7 +105,9 @@ public class ClassroomRequestAgent extends Agent {
 				// Set the content for the message, a tuple with the
 				// group id and the professor id
 				if (refusePair == null) {
-					msg.setContent(assignNewProfessor(groups.poll()).toString());
+					msg
+							.setContent(assignNewProfessor(groups.poll())
+									.toString());
 				} else {
 					msg.setContent(refusePair.toString());
 					refusePair = null;
@@ -196,12 +198,11 @@ public class ClassroomRequestAgent extends Agent {
 			return groups.isEmpty() || state == FINISHED;
 		}
 	}
-	
-	private void fillGroups()
-	{
+
+	private void fillGroups() {
 		// SQL to obtain groups
 		String sql = "SELECT Materia_Id, Materia_Poblacion from Materia;";
-		String materia="";
+		String materia = "";
 		// Generate connection to the database
 		Connection conexion = factory.getConnection();
 		ResultSet result;
@@ -209,29 +210,31 @@ public class ClassroomRequestAgent extends Agent {
 			// Obtains ResultSet tables from the execution of the query
 			result = conexion.prepareStatement(sql).executeQuery();
 			// Number of groups
-			double nuGroups=0;
+			double nuGroups = 0;
 			// Iterates over the table of results
-			while (result.next()) 
-			{
-					// Stores the Materia_Id
-					materia=result.getString("Materia_Id");
-					// Divides the population and the capacity and results in the number of groups
-					nuGroups=Math.ceil(result.getDouble(2)/GroupsCapacity);
-					// Stores the groups in the database
-					for(int i=0;i<nuGroups;i++)
-					{
-						conexion.prepareStatement("INSERT into grupo(Materia_Id, Grupo_Capacidad ) values (\""+materia+"\",\""+Math.ceil(GroupsCapacity/nuGroups)+"\");").executeUpdate();
-					}
+			while (result.next()) {
+				// Stores the Materia_Id
+				materia = result.getString("Materia_Id");
+				// Divides the population and the capacity and results in the
+				// number of groups
+				nuGroups = Math.ceil(result.getDouble(2) / GroupsCapacity);
+				// Stores the groups in the database
+				for (int i = 0; i < nuGroups; i++) {
+					conexion.prepareStatement(
+							"INSERT into grupo(Materia_Id, Grupo_Capacidad ) values (\""
+									+ materia + "\",\""
+									+ Math.ceil(GroupsCapacity / nuGroups)
+									+ "\");").executeUpdate();
+				}
 			}
-			//conexion.commit();
+			// conexion.commit();
 		} catch (SQLException e) {
 			logError(this, "SQL Error when filling groups");
 			e.printStackTrace();
 		}
 	}
 
-	private void obtainGroups() 
-	{
+	private void obtainGroups() {
 		// SQL to obtain groups
 		String sql = "SELECT Grupo_Id FROM grupo;";
 		// Generate connection to the database
@@ -242,8 +245,8 @@ public class ClassroomRequestAgent extends Agent {
 			result = conexion.prepareStatement(sql).executeQuery();
 			// Iterates over the table of results
 			while (result.next()) {
-					// Stores the resultant groups in a queue
-					groups.offer(result.getString(1));
+				// Stores the resultant groups in a queue
+				groups.offer(result.getString(1));
 			}
 		} catch (SQLException e) {
 			logError(this, "SQL Error when filling groups");
@@ -264,8 +267,8 @@ public class ClassroomRequestAgent extends Agent {
 			result = conexion.prepareStatement(sql).executeQuery();
 			// Iterates over the table of results
 			while (result.next()) {
-					// Stores the resultant professors in a queue
-					professors.offer(result.getString(1));
+				// Stores the resultant professors in a queue
+				professors.offer(result.getString(1));
 			}
 		} catch (SQLException e) {
 			log(this, "SQL Error when filling groups.");

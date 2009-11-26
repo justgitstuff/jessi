@@ -13,9 +13,9 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
 /**
- * This behavior searches for agents which offer a service of the type
- * indicated type. The name of the agents found that offer this service
- * are inserted in a given list.
+ * This behavior searches for agents which offer a service of the type indicated
+ * type. The name of the agents found that offer this service are inserted in a
+ * given list.
  * 
  * @author Rogelio Ramirez
  */
@@ -23,21 +23,22 @@ public class SearchServiceBehaviour extends TickerBehaviour {
 
 	private List<AID> offerAgents;
 	private String serviceType;
-	
+
 	public SearchServiceBehaviour(Agent a, long period, List<AID> offerAgents,
-								  String serviceType) {		
+			String serviceType) {
 		super(a, period);
 		this.myAgent = a;
 		this.offerAgents = offerAgents;
 		this.serviceType = serviceType;
 		log(a, "Searching behaviour initialized.");
 	}
+
 	/**
 	 * Search every tick for new agents offering the classroom search service.
 	 */
 	@Override
 	protected void onTick() {
-		log(myAgent,  "searching for new agents for the " + serviceType);
+		log(myAgent, "searching for new agents for the " + serviceType);
 		// Template to ask the DF to search for the agent
 		DFAgentDescription template = new DFAgentDescription();
 		// The service description we are looking for
@@ -46,12 +47,12 @@ public class SearchServiceBehaviour extends TickerBehaviour {
 		sd.setType(serviceType);
 		// Add the service type to the template we are searching for
 		template.addServices(sd);
-		// Ask for all the agents that have the given service type 
+		// Ask for all the agents that have the given service type
 		// and add them to the list.
 		try {
 			// Search for the agents that offer the service
-			DFAgentDescription[] result = DFService.search(myAgent,template);
-			// StringBuilder for output purposes 
+			DFAgentDescription[] result = DFService.search(myAgent, template);
+			// StringBuilder for output purposes
 			StringBuilder sb = new StringBuilder();
 			int newAgents = 0;
 			// Add only the new agents that were found
@@ -62,10 +63,9 @@ public class SearchServiceBehaviour extends TickerBehaviour {
 					sb.append("\t" + dad.getName() + "\n");
 				}
 			}
-			
-			sb.insert(0, (newAgents > 0) ? 
-				"Found the following " + serviceType +  " agents:\n":
-				"No new agents found.");
+
+			sb.insert(0, (newAgents > 0) ? "Found the following " + serviceType
+					+ " agents:\n" : "No new agents found.");
 			log(myAgent, sb.toString());
 		} catch (FIPAException fe) {
 			fe.printStackTrace();

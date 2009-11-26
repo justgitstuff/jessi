@@ -18,13 +18,13 @@ public class Profesor extends Model {
 	private int id;
 	private String nombre;
 	private String tipo;
-	private LinkedHashSet<Horario> horariosDisp;
+	private LinkedHashSet<Horario> horarios;
 
 	protected Profesor(int id, String nombre, String tipo) throws SQLException {
 		this.id = id;
 		this.nombre = nombre;
 		this.tipo = tipo;
-		this.horariosDisp = getHorario();
+		this.horarios = getHorario();
 	}
 
 	public int getId() {
@@ -40,8 +40,8 @@ public class Profesor extends Model {
 	}
 
 	public LinkedHashSet<Horario> getHorario() throws SQLException {
-		if (horariosDisp == null) {
-			horariosDisp = new LinkedHashSet<Horario>();
+		if (horarios == null) {
+			horarios = new LinkedHashSet<Horario>();
 			String query = "select * from horarios_disp "
 					+ "where Horario_Disp_Id in "
 					+ "(select Horario_Disp_Id from profesor_horario "
@@ -56,8 +56,7 @@ public class Profesor extends Model {
 					int diaId = result.getInt("Dia_Id");
 					int horaInicio = result.getInt("Hora_Inicio");
 					int horaFin = result.getInt("Hora_Fin");
-					horariosDisp
-							.add(new Horario(id, diaId, horaInicio, horaFin));
+					horarios.add(new Horario(id, diaId, horaInicio, horaFin));
 				}
 			} catch (SQLException e) {
 				logError("SQL Statement failed: " + query);
@@ -65,18 +64,72 @@ public class Profesor extends Model {
 				throw new SQLException(e);
 			}
 		}
-		return horariosDisp;
+		return horarios;
+	}
+
+	private LinkedHashSet<Horario> getHorario(boolean busy) throws SQLException {
+		LinkedHashSet<Horario> horarios = new LinkedHashSet<Horario>();
+		for (Horario horario : getHorario()) {
+			if (horario.isBusy() == busy) {
+				horarios.add(horario);
+			}
+		}
+		return horarios;
+
+	}
+
+	/** Non-backed linked hash set */
+	public LinkedHashSet<Horario> getHorarioDisp() throws SQLException {
+		return getHorario(false);
+	}
+
+	/** Non-backed linked hash set */
+	public LinkedHashSet<Horario> getHorarioBusy() throws SQLException {
+		return getHorario(true);
+	}
+
+	private boolean setHorario(int horarioId, boolean busy) {
+		boolean done = false;
+		for (Horario hr : horarios) {
+			if (hr.getId() == horarioId) {
+				hr.setBusy(busy);
+				done = true;
+				break;
+			}
+		}
+		return done;
+	}
+
+	public boolean setHorarioBusy(int horarioId) {
+		return setHorario(horarioId, true);
+	}
+
+	public boolean setHorarioFree(int horarioId) {
+		return setHorario(horarioId, false);
+	}
+
+	public boolean setHorarioBusy(Horario h) {
+		return setHorario(h.getId(), true);
+	}
+
+	public boolean setHorarioFree(Horario h) {
+		return setHorario(h.getId(), false);
 	}
 
 	@Override
 	public String toString() {
-		return "Profesor(" + id + "," + nombre + "," + tipo + ","
-				+ horariosDisp + ")";
+		return "Profesor(" + id + "," + nombre + "," + tipo + "," + horarios
+				+ ")";
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		return this.id == ((Profesor) obj).id;
+	}
+
+	@Override
+	public int hashCode() {
+		return new Integer(id).hashCode();
 	}
 
 	/** Load a professor from the database given his id */

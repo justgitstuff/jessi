@@ -25,6 +25,7 @@ public class DatabaseAgent extends Agent {
 
 	/**
 	 * Initialize the database name and the connection to the database server.
+	 * 
 	 * @param dbName
 	 *            Database schema to be searched. "itesm" schema.
 	 */
@@ -46,8 +47,8 @@ public class DatabaseAgent extends Agent {
 
 		@Override
 		public void action() {
-			MessageTemplate mt = MessageTemplate.MatchPerformative(
-								 ACLMessage.REQUEST);
+			MessageTemplate mt = MessageTemplate
+					.MatchPerformative(ACLMessage.REQUEST);
 			ACLMessage msg = receive(mt);
 			if (msg != null) {
 				ResultSetMetaData resultMeta;
@@ -57,7 +58,8 @@ public class DatabaseAgent extends Agent {
 					if (!connection.isValid(TIMEOUT_WAIT_TIME)) {
 						connection = factory.getConnection(dbName);
 					}
-					result = connection.prepareStatement(msg.getContent()).executeQuery();
+					result = connection.prepareStatement(msg.getContent())
+							.executeQuery();
 					resultMeta = result.getMetaData();
 					while (result.next()) {
 						for (int i = 0; i < resultMeta.getColumnCount(); i++) {
