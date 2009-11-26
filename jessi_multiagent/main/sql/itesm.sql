@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-11-25 23:26:09
+Date: 2009-11-25 23:35:01
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -37,14 +37,17 @@ CREATE TABLE `alumno` (
   `Alumno_Id` int(11) NOT NULL AUTO_INCREMENT,
   `Alumno_Matricula` varchar(10) DEFAULT NULL,
   `Alumno_Nombre` varchar(25) DEFAULT NULL,
-  `Alumno_Carrera` varchar(3) DEFAULT NULL,
+  `Alumno_Carrera` varchar(5) DEFAULT NULL,
   `Alumno_Semestre` int(11) DEFAULT NULL,
   PRIMARY KEY (`Alumno_Id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of alumno
 -- ----------------------------
+INSERT INTO `alumno` VALUES ('1', '667457', 'Roberto Gómez Bolaños', 'LATI', '4');
+INSERT INTO `alumno` VALUES ('2', '239237', 'Juan Rey', '', '9');
+INSERT INTO `alumno` VALUES ('3', '676554', 'Juan Perez', 'ISC', '3');
 
 -- ----------------------------
 -- Table structure for `alumno_grupo`
