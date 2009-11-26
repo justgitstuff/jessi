@@ -221,10 +221,9 @@ public class ClassroomRequestAgent extends Agent {
 					// Divides the population and the capacity and results in the number of groups
 					nuGroups=Math.ceil(result.getDouble(2)/GroupsCapacity);
 					// Stores the groups in the database
-					while(nuGroups!=0.0)
+					for(int i=0;i<nuGroups;i++)
 					{
-						conexion.prepareStatement("INSERT into grupo(Materia_Id ) values (\""+materia+"\");").executeUpdate();
-						nuGroups--;
+						conexion.prepareStatement("INSERT into grupo(Materia_Id, Grupo_Capacidad ) values (\""+materia+"\",\""+Math.ceil(GroupsCapacity/nuGroups)+"\");").executeUpdate();
 					}
 			}
 			conexion.commit();
@@ -244,14 +243,10 @@ public class ClassroomRequestAgent extends Agent {
 		try {
 			// Obtains ResultSet tables from the execution of the query
 			result = conexion.prepareStatement(sql).executeQuery();
-			// Obtains the MetaData of the previous ResultSet
-			ResultSetMetaData resultMeta = result.getMetaData();
 			// Iterates over the table of results
 			while (result.next()) {
-				for (int i = 1; i <=resultMeta.getColumnCount(); i++) {
 					// Stores the resultant groups in a queue
-					groups.offer(result.getString(i));
-				}
+					groups.offer(result.getString(1));
 			}
 		} catch (SQLException e) {
 			logError(this, "SQL Error when filling groups");
