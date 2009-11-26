@@ -1,3 +1,5 @@
+<<<<<<< .mine
+=======
 /*
 Navicat MySQL Data Transfer
 
@@ -981,3 +983,4 @@ INSERT INTO `profesor_materia` VALUES ('TI3023', '7', '2');
 INSERT INTO `profesor_materia` VALUES ('TI3024', '12', '3');
 INSERT INTO `profesor_materia` VALUES ('TI3024', '13', '1');
 INSERT INTO `profesor_materia` VALUES ('TI3024', '15', '1');
+>>>>>>> .r32
