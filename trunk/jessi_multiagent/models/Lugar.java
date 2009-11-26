@@ -34,7 +34,7 @@ public class Lugar extends Model {
 		return this.id == ((Lugar) obj).id;
 	}
 	
-	public static Lugar createLugar(int id) throws SQLException {
+	public static Lugar createLugarFromId(int id) throws SQLException {
 		String query = "select * from lugar where Lugar_Id = " + id + ";";
 		Lugar lugar = null;
 		try {
@@ -54,11 +54,5 @@ public class Lugar extends Model {
 			throw new SQLException(e);
 		}
 		return lugar;
-	}
-	
-	public static void main(String[] args) throws Exception {
-		for(int i = 1; i < 100; i++) {
-			createLugar(i);
-		}
 	}
 }

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.TreeSet;
 
@@ -18,7 +19,7 @@ public class Profesor extends Model {
 	private int id;
 	private String nombre;
 	private String tipo;
-	private TreeSet<Hora> horarios;
+	private LinkedHashSet<Horario> horarios;
 	
 	protected Profesor(int id, String nombre, String tipo) throws SQLException {
 		this.id = id;
@@ -39,22 +40,24 @@ public class Profesor extends Model {
 		return tipo;
 	}
 	
-	private TreeSet<Hora> getHorario() throws SQLException{
+	private LinkedHashSet<Horario> getHorario() throws SQLException{
 		if(horarios == null) {
-			horarios = new TreeSet<Hora>();
-			String query = "select * from hora " +
-							"where Hora_Id in (" +
-							"select Horario_Disp_Id from profesor_horario " +
-							"where Profesor_Id = " + id + ");";
+			horarios = new LinkedHashSet<Horario>();
+			String query = "select * from horarios_disp " +
+						   "where Horario_Disp_Id in " +
+						   "(select Horario_Disp_Id from profesor_horario " +
+						   "where profesor_id = " + id +")";
 			try {
 				Connection c = Model.getDBConnection();
 				PreparedStatement s = c.prepareStatement(query);
 				ResultSet result = s.executeQuery();
 				
 				while(result.next()) {
-					int id = result.getInt("Hora_Id");
-					int nombre = result.getInt("Hora_Nombre");
-					horarios.add(new Hora(id, nombre));
+					int id = result.getInt("Horario_Disp_Id");
+					int diaId = result.getInt("Dia_Id");
+					int horaInicio = result.getInt("Hora_Inicio");
+					int horaFin = result.getInt("Hora_Fin");
+					horarios.add(new Horario(id, diaId, horaInicio, horaFin));
 				}
 			} catch (SQLException e) {
 				logError("SQL Statement failed: " + query);
@@ -76,7 +79,7 @@ public class Profesor extends Model {
 	}
 	
 	/** Load a professor from the database given his id*/
-	public static Profesor createProfesor(int id) throws SQLException {
+	public static Profesor createProfesorFromId(int id) throws SQLException {
 		String query = "select * from profesor where Profesor_Id = " + id + ";";
 		Profesor prof = null;
 		try {
@@ -123,5 +126,11 @@ public class Profesor extends Model {
 			throw new SQLException(e); 
 		}		
 		return professors;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		for(int i = 1; i < 10; i++) {
+			createProfesorFromId(i);
+		}
 	}
 }
