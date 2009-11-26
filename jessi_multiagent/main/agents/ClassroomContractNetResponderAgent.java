@@ -1,9 +1,12 @@
 package main.agents;
 
+import models.*;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
@@ -27,31 +30,27 @@ public class ClassroomContractNetResponderAgent extends Agent {
 	
 	public static final String SERVICE_NAME = "JADE-classroom-search";
 	public static final String SERVICE_TYPE = "classroom-search";
-	private ConnectionFactory connectionFactory = null;
-	private Connection connection = null;
+	private ConnectionFactory connectionFactory;
+	private Connection connection;
+	private LinkedList<Profesor> profesores;
+	private LinkedList<Lugar> lugares;
 	
-	public ClassroomContractNetResponderAgent() {
+	
+	public ClassroomContractNetResponderAgent() throws SQLException {
 		super(); // Call the agent constructor		
 		connectionFactory = new ConnectionFactory();
 		connection = connectionFactory.getConnection();
-		
-		ResultSet result = executeSQLStatement("select * from profesor");
-		
 		try {
-			while(result.next()) {
-				int id = result.getInt("Profesor_Id");
-				String nombre = result.getString("Profesor_Nombre");
-				String tipo = result.getString("Profesor_Tipo");
-				
-				System.out.println(id + " " + nombre + " " + tipo);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
+			profesores = Profesor.createAll();
+			lugares = Lugar.createAll();
 		}
-		
-		assert false;
+		catch(SQLException e) {
+			logError(this, "Fatal error in the database.");
+			e.printStackTrace();
+			throw new SQLException(e);
+		}
 	}
-	
+		
 	protected void setup() {
 		// Register the service with the DFAgent
 		addBehaviour(new RegisterServiceBehaviour(this, SERVICE_NAME, SERVICE_TYPE));		
